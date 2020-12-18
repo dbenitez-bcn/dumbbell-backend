@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'idea'
 }
 
 group = 'com.dumbbell'
@@ -32,4 +33,58 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+sourceSets {
+	integrationTest {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	integrationTestImplementation.extendsFrom testImplementation
+	integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+task integrationTest(type: Test) {
+	useJUnitPlatform()
+	description = 'Runs integration tests.'
+	group = 'verification'
+
+	testClassesDirs = sourceSets.integrationTest.output.classesDirs
+	classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+idea {
+	module {
+		testSourceDirs += project.sourceSets.integrationTest.java.srcDirs
+	}
+}
+
+sourceSets {
+	end2end {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	end2endImplementation.extendsFrom testImplementation
+	end2endRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+task end2end(type: Test) {
+	useJUnitPlatform()
+	description = 'Runs integration tests.'
+	group = 'verification'
+
+	testClassesDirs = sourceSets.end2end.output.classesDirs
+	classpath = sourceSets.end2end.runtimeClasspath
+}
+
+idea {
+	module {
+		testSourceDirs += project.sourceSets.end2end.java.srcDirs
+	}
 }
