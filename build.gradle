@@ -35,6 +35,7 @@ test {
 	useJUnitPlatform()
 }
 
+// Integration test module
 sourceSets {
 	integrationTest {
 		compileClasspath += sourceSets.main.output
@@ -62,6 +63,7 @@ idea {
 	}
 }
 
+// End 2 end test module
 sourceSets {
 	end2end {
 		compileClasspath += sourceSets.main.output
