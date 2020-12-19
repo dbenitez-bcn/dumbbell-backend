@@ -1,4 +1,4 @@
-package com.dumbbell.backend.accounts.application;
+package com.dumbbell.backend.core.presentation.exceptions;
 
 import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidEmailAddress;

@@ -1,4 +1,4 @@
-package com.dumbbell.backend.accounts.application;
+package com.dumbbell.backend.core.presentation.exceptions;
 
 import lombok.RequiredArgsConstructor;
 
