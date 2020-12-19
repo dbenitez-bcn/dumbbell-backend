@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS ACCOUNTS (
+    id uuid NOT NULL PRIMARY KEY,
+    email VARCHAR,
+    password VARCHAR
+)
