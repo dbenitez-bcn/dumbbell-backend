@@ -1,9 +1,6 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch
-
+  setup:
     working_directory: ~/repo
 
     environment:
@@ -22,3 +19,27 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
+      - run: pwd
+      - run: ls -la
+#  build:
+#    docker:
+#      - image: circleci/openjdk:11.0.3-jdk-stretch
+#
+#    working_directory: ~/repo
+#
+#    environment:
+#      _JAVA_OPTIONS: "-Xmx3g"
+#      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+#      TERM: dumb
+#
+#    steps:
+#      - checkout
+#      - restore_cache:
+#          keys:
+#            - v1-dependencies-{{ checksum "build.gradle" }}
+#            - v1-dependencies-
+#      - run: ./gradlew dependencies
+#      - save_cache:
+#          paths:
+#            - ~/.gradle
+#          key: v1-dependencies-{{ checksum "build.gradle" }}
