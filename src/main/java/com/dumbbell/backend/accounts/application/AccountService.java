@@ -25,7 +25,7 @@ public class AccountService {
         });
         String hashedPassword = passwordManager.encode(new PlainPassword(password));
         Account account = new Account(email, hashedPassword);
-        accountRepository.create(account);
+        accountRepositor.create(account);
     }
 
     public Account login(String email, String password) {

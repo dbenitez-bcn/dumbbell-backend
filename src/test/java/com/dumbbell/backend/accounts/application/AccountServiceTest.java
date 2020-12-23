@@ -152,11 +152,6 @@ class AccountServiceTest {
                 .isInstanceOf(LoginFailed.class);
     }
 
-    @Test
-    void fails() {
-        assertFals(true);
-    }
-
     private void willFindAnAccount(Account account) {
         when(accountRepository.getByEmail(any(AccountEmail.class))).thenReturn(Optional.of(account));
     }
