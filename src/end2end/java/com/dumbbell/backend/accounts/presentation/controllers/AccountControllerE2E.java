@@ -4,7 +4,6 @@ import com.dumbbell.backend.accounts.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -26,10 +25,5 @@ class AccountControllerE2E extends ApplicationTestCase {
 
         assertRequestWithBody(POST, "/register", body, 200);
         assertRequestWithBody(GET, "/login", body, 200);
-    }
-
-    @Test
-    void fails() {
-        assertFalse(true);
     }
 }
