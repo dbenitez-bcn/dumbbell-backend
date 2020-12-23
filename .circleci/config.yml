@@ -57,7 +57,7 @@ jobs:
     steps:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
-      - run: ./gradlew test
+      - run: ./gradlew test -i
 
 workflows:
   version: 2
