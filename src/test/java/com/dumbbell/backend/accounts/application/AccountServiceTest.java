@@ -23,6 +23,7 @@ import java.util.Optional;
 import static com.dumbbell.backend.accounts.fixtures.AccountFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -150,6 +151,11 @@ class AccountServiceTest {
 
         assertThatThrownBy(() -> sut.login(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
                 .isInstanceOf(LoginFailed.class);
+    }
+
+    @Test
+    void fails() {
+        assertFalse(true);
     }
 
     private void willFindAnAccount(Account account) {
