@@ -35,6 +35,6 @@ class AccountDataSourceIT {
     void findByEmail_whenAccountDontExist_shouldReturnNothing() {
         Optional<AccountEntity> result = sut.findByEmail("notRegistered@email.com");
 
-        assertTha(result).isEmpty();
+        assertThat(result).isEmpty();
     }
 }
