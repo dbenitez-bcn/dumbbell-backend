@@ -41,7 +41,7 @@ jobs:
     steps:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
-      - run: ./gradlew build testClasses -x test
+      - run: ./gradlew build testClasses integrationTestClasses -x test
 
   "unit test":
     docker:
@@ -59,6 +59,22 @@ jobs:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew test -i
 
+  "integration test":
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+
+    working_directory: ~/repo
+
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      TERM: dumb
+
+    steps:
+      - restore_cache:
+          key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - run: ./gradlew integrationTest -i
+
 workflows:
   version: 2
   workflow:
@@ -68,5 +84,8 @@ workflows:
           requires:
             - setup
       - "unit test":
+          requires:
+            - build
+      - "integration test":
           requires:
             - build
