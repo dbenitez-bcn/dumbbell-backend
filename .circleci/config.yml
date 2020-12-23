@@ -22,34 +22,29 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: pwd
-      - run: ls -la
-      - run: cd ~/src
-      - run: ls -la
-      - run: cd ~/repo/src
-      - run: ls -la
-#  build:
-#    docker:
-#      - image: circleci/openjdk:11.0.3-jdk-stretch
-#
-#    working_directory: ~/repo
-#
-#    environment:
-#      _JAVA_OPTIONS: "-Xmx3g"
-#      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-#      TERM: dumb
-#
-#    steps:
-#      - checkout
-#      - restore_cache:
-#          keys:
-#            - v1-dependencies-{{ checksum "build.gradle" }}
-#            - v1-dependencies-
-#      - run: ./gradlew dependencies
-#      - save_cache:
-#          paths:
-#            - ~/.gradle
-#          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - save_cache:
+          paths:
+            - ~/src
+          key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+  build:
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+
+    working_directory: ~/repo
+
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      TERM: dumb
+
+    steps:
+      - restore_cache:
+          keys: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+      - run: ./gradlew build testClasses -x test
 
 
 workflows:
@@ -57,3 +52,5 @@ workflows:
   workflow:
     jobs:
       - setup
+      - build
+          requires: setup
