@@ -42,10 +42,10 @@ jobs:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew build testClasses integrationTestClasses end2endClasses -x test
-       - save_cache:
-       paths:
-         - ~
-       key: code-cache-{{ .Environment.CIRCLE_SHA1 }}-compiled
+      - save_cache:
+          paths:
+            - ~
+          key: code-cache-{{ .Environment.CIRCLE_SHA1 }}-compiled
 
   "unit test":
     docker:
