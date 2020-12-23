@@ -46,11 +46,11 @@ jobs:
             - v1-dependencies-
       - run: ./gradlew build testClasses -x test
 
-
 workflows:
   version: 2
   workflow:
     jobs:
       - setup
       - build
-          requires: setup
+          requires:
+            - setup
