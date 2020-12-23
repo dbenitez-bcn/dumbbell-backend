@@ -26,6 +26,7 @@ jobs:
           paths:
             - ~
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+
   build:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
@@ -42,6 +43,22 @@ jobs:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew build testClasses -x test
 
+  "unit test":
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+
+    working_directory: ~/repo
+
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      TERM: dumb
+
+    steps:
+      - restore_cache:
+          key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - run: ./gradlew test
+
 workflows:
   version: 2
   workflow:
@@ -50,3 +67,6 @@ workflows:
       - build: 
           requires:
             - setup
+      - "unit test":
+          requires:
+            - build
