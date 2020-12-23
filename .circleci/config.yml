@@ -75,7 +75,7 @@ jobs:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew integrationTest -i
 
-  "end 2 end test":
+  "end to end test":
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
 
