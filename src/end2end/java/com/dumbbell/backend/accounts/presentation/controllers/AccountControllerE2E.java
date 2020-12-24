@@ -24,6 +24,6 @@ class AccountControllerE2E extends ApplicationTestCase {
         body.put("password", "password1234");
 
         assertRequestWithBody(POST, "/register", body, 200);
-        assertRequestWithBody(GET, "/login", body, 200);
+        assertRequestWithBody(POST, "/login", body, 200);
     }
 }

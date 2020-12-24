@@ -7,7 +7,6 @@ import com.dumbbell.backend.accounts.presentation.request.RegisterRequest;
 import com.dumbbell.backend.accounts.presentation.responses.LoginResponse;
 import com.dumbbell.backend.core.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +24,7 @@ public class AccountController {
         accountService.register(requestVM.email, requestVM.password);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
         Account account = accountService.login(request.email, request.password);
         HashMap<String, Object> claims = new HashMap<>();
