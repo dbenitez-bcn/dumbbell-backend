@@ -13,3 +13,7 @@ Backend for dumbbell application.
     4. Add `dev` in profile section
 5. Run `Docker dev stack` to set up a local database
 6. Run the application
+
+## Run in alpha mode
+1. Execute `docker/Build image` task in gradle
+2. Run `Docker alpha` in intellij
