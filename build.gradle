@@ -97,3 +97,8 @@ idea {
 		testSourceDirs += project.sourceSets.end2end.java.srcDirs
 	}
 }
+
+task('Build image', type: Exec, group: 'Docker') {
+	executable 'docker'
+	args 'build', '-t', 'dumbbell-be-image', '.'
+}
