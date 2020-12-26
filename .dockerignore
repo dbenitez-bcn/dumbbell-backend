@@ -1,0 +1,8 @@
+.circleci
+.idea
+docker
+.env.example
+.gitignore
+.env
+README.md
+HELP.md
