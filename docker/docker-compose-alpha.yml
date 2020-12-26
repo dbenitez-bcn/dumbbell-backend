@@ -19,3 +19,9 @@ services:
       - 8080:8080
     depends_on:
       - db
+  adminer:
+    container_name: adminerino
+    image: adminer
+    restart: always
+    ports:
+      - 8083:8080
