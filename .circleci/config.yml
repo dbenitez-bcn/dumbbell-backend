@@ -63,7 +63,7 @@ jobs:
       - save_cache:
           paths:
             - ~/build/jacoco/test.exec
-          key: jacoco-test-{{ checksum "~/build/jacoco/test.exec" }}
+          key: jacoco-test-{{ .Environment.CIRCLE_SHA1 }}
 
   "integration test":
     docker:
@@ -83,7 +83,7 @@ jobs:
       - save_cache:
           paths:
             - ~/build/jacoco/integrationTest.exec
-          key: jacoco-integrationTest-{{ checksum "~/build/jacoco/integrationTest.exec" }}
+          key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
 
   "end to end test":
     docker:
@@ -103,7 +103,20 @@ jobs:
       - save_cache:
           paths:
             - ~/build/jacoco/end2end.exec
-          key: jacoco-end2end-{{ checksum "~/build/jacoco/end2end.exec" }}
+          key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
+
+  codecov:
+    - restore_cache:
+        key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+    - restore_cache:
+        key: jacoco-test-{{ .Environment.CIRCLE_SHA1 }}
+    - restore_cache:
+        key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
+    - restore_cache:
+        key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
+    - run: cd ~/build/jacoco
+    - run: ls -la
+
 
 workflows:
   version: 2
@@ -122,3 +135,8 @@ workflows:
       - "end to end test":
           requires:
             - build
+      - codecov:
+          required:
+            - "unit test"
+            - "integration test"
+            - "end to end test"
