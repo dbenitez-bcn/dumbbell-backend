@@ -62,7 +62,7 @@ jobs:
       - run: ./gradlew test -i
       - save_cache:
           paths:
-            -./build/jacoco/test.exec
+            - ./build/jacoco/test.exec
           key: jacoco-test-{{ .Environment.CIRCLE_SHA1 }}
 
   "integration test":
@@ -82,7 +82,7 @@ jobs:
       - run: ./gradlew integrationTest -i
       - save_cache:
           paths:
-            -./build/jacoco/integrationTest.exec
+            - ./build/jacoco/integrationTest.exec
           key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
 
   "end to end test":
@@ -102,7 +102,7 @@ jobs:
       - run: ./gradlew end2end -i
       - save_cache:
           paths:
-            -./build/jacoco/end2end.exec
+            - ./build/jacoco/end2end.exec
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
 
   codecov:
@@ -118,8 +118,10 @@ jobs:
           key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd build/jacoco
+      - run: pwd
       - run: ls -la
+      #- run: cd build/jacoco
+      #- run: ls -la
 
 
 workflows:
