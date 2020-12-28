@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 	id 'idea'
+	id 'jacoco'
 }
 
 group = 'com.dumbbell'
@@ -98,7 +99,13 @@ idea {
 	}
 }
 
+// Task for building docker image
 task('Build image', type: Exec, group: 'Docker') {
 	executable 'docker'
 	args 'build', '-t', 'dumbbell-be-image', '.'
+}
+
+// Updates jacocoTestReport task to use all .exec files
+jacocoTestReport {
+	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
 }
