@@ -105,7 +105,7 @@ jobs:
             - ./build/jacoco/end2end.exec
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
 
-  codecov:
+  "codecov upload":
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     working_directory: ~/repo
@@ -140,7 +140,7 @@ workflows:
       - "end to end test":
           requires:
             - build
-      - codecov:
+      - "codecov upload":
           requires:
             - "unit test"
             - "integration test"
