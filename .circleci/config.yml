@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  codecov: codecov/codecov@1.0.2
 jobs:
   setup:
     docker:
@@ -58,6 +60,10 @@ jobs:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew test -i
+      - save_cache:
+          paths:
+            - ~/build/jacoco/test.exec
+          key: jacoco-test-{{ checksum "~/build/jacoco/test.exec" }}
 
   "integration test":
     docker:
@@ -74,6 +80,10 @@ jobs:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew integrationTest -i
+      - save_cache:
+          paths:
+            - ~/build/jacoco/integrationTest.exec
+          key: jacoco-integrationTest-{{ checksum "~/build/jacoco/integrationTest.exec" }}
 
   "end to end test":
     docker:
@@ -90,6 +100,10 @@ jobs:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew end2end -i
+      - save_cache:
+          paths:
+            - ~/build/jacoco/end2end.exec
+          key: jacoco-end2end-{{ checksum "~/build/jacoco/end2end.exec" }}
 
 workflows:
   version: 2
