@@ -106,16 +106,20 @@ jobs:
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
 
   codecov:
-    - restore_cache:
-        key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
-    - restore_cache:
-        key: jacoco-test-{{ .Environment.CIRCLE_SHA1 }}
-    - restore_cache:
-        key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
-    - restore_cache:
-        key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
-    - run: cd ~/build/jacoco
-    - run: ls -la
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+    working_directory: ~/repo
+    steps:
+      - restore_cache:
+          key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: jacoco-test-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
+      - run: cd ~/build/jacoco
+      - run: ls -la
 
 
 workflows:
@@ -136,7 +140,7 @@ workflows:
           requires:
             - build
       - codecov:
-          required:
+          requires:
             - "unit test"
             - "integration test"
             - "end to end test"
