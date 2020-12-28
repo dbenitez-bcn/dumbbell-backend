@@ -118,10 +118,7 @@ jobs:
           key: jacoco-integrationTest-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
-      - run: cd build/build/jacoco
-      - run: ls -la
-      #- run: cd build/jacoco
-      #- run: ls -la
+      - run: ./gradlew jacocoTestReport
 
 
 workflows:
