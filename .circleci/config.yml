@@ -26,7 +26,7 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - save_cache:
           paths:
-            - ~
+            - ~/
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
 
   build:
