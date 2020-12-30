@@ -108,4 +108,7 @@ task('Build image', type: Exec, group: 'Docker') {
 // Updates jacocoTestReport task to use all .exec files
 jacocoTestReport {
 	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+	reports {
+		xml.enabled true
+	}
 }
