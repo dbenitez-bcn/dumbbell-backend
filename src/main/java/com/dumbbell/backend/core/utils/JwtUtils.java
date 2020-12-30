@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class JwtUtils {
 
-    @Value("${SECRET_KEY}")
+    @Value("${SECRET_KEY:DEFAULT_KEY}")
     private String SECRET_KEY;
 
     public String generateToken(String subject, Map<String, Object> claims) {
