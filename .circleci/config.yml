@@ -119,9 +119,8 @@ jobs:
       - restore_cache:
           key: jacoco-end2end-{{ .Environment.CIRCLE_SHA1 }}
       - run: ./gradlew jacocoTestReport
-      - run: cat ./build/reports/jacoco/test/html/index.html
       - codecov/upload:
-          file: ./build/reports/jacoco/test/html/index.html
+          file: ./build/reports/jacoco/test/jacocoTestReport.xml
 
 
 workflows:
