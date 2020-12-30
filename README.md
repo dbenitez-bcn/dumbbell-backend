@@ -1,4 +1,8 @@
-# dumbbell-backend
+# Dumbbell backend
+[![CircleCI](https://circleci.com/gh/dbenitez-bcn/dumbbell-backend.svg?style=shield)](https://circleci.com/gh/dbenitez-bcn/dumbbell-backend)
+[![codecov](https://codecov.io/gh/dbenitez-bcn/dumbbell-backend/branch/main/graph/badge.svg)](https://codecov.io/gh/dbenitez-bcn/dumbbell-backend)
+
+## Description
 Backend for dumbbell application.
 
 ## Getting started
