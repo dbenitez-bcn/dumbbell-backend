@@ -12,9 +12,9 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static com.dumbbell.backend.accounts.fixtures.AccountEntityFixture.defaultAccountEntity;
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.ACCOUNT_EMAIL;
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.defaultAccount;
+import static com.dumbbell.backend.accounts.AccountEntityFixture.defaultAccountEntity;
+import static com.dumbbell.backend.accounts.AccountFixture.ACCOUNT_EMAIL;
+import static com.dumbbell.backend.accounts.AccountFixture.defaultAccount;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

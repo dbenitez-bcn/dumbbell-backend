@@ -10,8 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.ACCOUNT_PASSWORD;
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.ENCODED_PASSWORD;
+import static com.dumbbell.backend.accounts.AccountFixture.ACCOUNT_PASSWORD;
+import static com.dumbbell.backend.accounts.AccountFixture.ENCODED_PASSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;

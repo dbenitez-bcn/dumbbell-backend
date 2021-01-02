@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static com.dumbbell.backend.accounts.fixtures.AccountEntityFixture.defaultAccountEntity;
+import static com.dumbbell.backend.accounts.AccountEntityFixture.defaultAccountEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)

@@ -20,7 +20,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.*;
+import static com.dumbbell.backend.accounts.AccountFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

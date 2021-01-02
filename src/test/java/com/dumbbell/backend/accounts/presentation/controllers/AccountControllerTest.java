@@ -13,7 +13,7 @@ import org.mockito.Mock;
 
 import java.util.HashMap;
 
-import static com.dumbbell.backend.accounts.fixtures.AccountFixture.*;
+import static com.dumbbell.backend.accounts.AccountFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
