@@ -1,4 +1,4 @@
-package com.dumbbell.backend.accounts.fixtures;
+package com.dumbbell.backend.accounts;
 
 
 import com.dumbbell.backend.accounts.domain.aggregates.Account;

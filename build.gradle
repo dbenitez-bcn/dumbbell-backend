@@ -112,3 +112,36 @@ jacocoTestReport {
 		xml.enabled true
 	}
 }
+
+// Fixtures
+sourceSets {
+	fixtures {
+		compileClasspath = sourceSets.main.output + configurations.fixturesCompile
+		runtimeClasspath = output + compileClasspath + configurations.fixturesRuntime
+	}
+}
+
+configurations {
+	outputDirs
+
+	// This configuration holds dependencies to libraries or another projects
+	// and will be placend on fixtures source set's classpath.
+	fixturesCompile.extendsFrom compile, compileOnly
+	fixturesRuntime.extendsFrom runtime, fixturesCompile
+	fixturesAnnotationProcessor.extendsFrom annotationProcessor
+
+	// Following two configurations adds compiled fixtures classes to the
+	// fixtures* source sets so it can be used by other projects as a
+	// dependency target.
+	fixturesUsageCompile.extendsFrom fixturesCompile, outputDirs
+	fixturesUsageRuntime.extendsFrom fixturesRuntime, fixturesUsageCompile
+
+	// Assume that the project wants to use the fixtures for its tests.
+	testCompile.extendsFrom fixturesUsageCompile
+	testRuntime.extendsFrom fixturesUsageRuntime
+}
+
+dependencies {
+	outputDirs sourceSets.fixtures.output
+	fixturesUsageCompile project(project.path)
+}
