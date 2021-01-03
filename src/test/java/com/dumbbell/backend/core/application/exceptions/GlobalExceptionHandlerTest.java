@@ -45,4 +45,28 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(403);
         assertThat(result.getBody().message).isEqualTo("Invalid email or password");
     }
+
+    @Test
+    void invalidExerciseName_shouldHandleInvalidName() {
+        ResponseEntity<ErrorDetails> result = sut.invalidExerciseName();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(422);
+        assertThat(result.getBody().message).isEqualTo("Invalid name for the exercise");
+    }
+
+    @Test
+    void invalidExerciseDescription_shouldHandleInvalidDescription() {
+        ResponseEntity<ErrorDetails> result = sut.invalidExerciseDescription();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(422);
+        assertThat(result.getBody().message).isEqualTo("Invalid description for the exercise");
+    }
+
+    @Test
+    void invalidExerciseDifficulty_shouldHandleInvalidDifficulty() {
+        ResponseEntity<ErrorDetails> result = sut.invalidExerciseDifficulty();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(422);
+        assertThat(result.getBody().message).isEqualTo("Invalid difficulty for the exercise. Should be between 1 and 10.");
+    }
 }

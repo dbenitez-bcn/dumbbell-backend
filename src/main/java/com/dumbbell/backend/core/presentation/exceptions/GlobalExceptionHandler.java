@@ -34,4 +34,22 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails("Invalid email or password");
         return ResponseEntity.status(403).body(errorDetails);
     }
+
+    @ExceptionHandler(LoginFailed.class)
+    public ResponseEntity<ErrorDetails> invalidExerciseName() {
+        ErrorDetails errorDetails = new ErrorDetails("Invalid name for the exercise");
+        return ResponseEntity.status(422).body(errorDetails);
+    }
+
+    @ExceptionHandler(LoginFailed.class)
+    public ResponseEntity<ErrorDetails> invalidExerciseDescription() {
+        ErrorDetails errorDetails = new ErrorDetails("Invalid description for the exercise");
+        return ResponseEntity.status(422).body(errorDetails);
+    }
+
+    @ExceptionHandler(LoginFailed.class)
+    public ResponseEntity<ErrorDetails> invalidExerciseDifficulty() {
+        ErrorDetails errorDetails = new ErrorDetails("Invalid difficulty for the exercise. Should be between 1 and 10.");
+        return ResponseEntity.status(422).body(errorDetails);
+    }
 }
