@@ -20,6 +20,13 @@ public class FlywayMultiSchemaManager implements FlywayMigrationStrategy {
                 .dataSource(dataSource)
                 .load()
                 .migrate();
+
+        Flyway.configure()
+                .schemas("exercises")
+                .locations("db/exercises")
+                .dataSource(dataSource)
+                .load()
+                .migrate();
     }
 
 }
