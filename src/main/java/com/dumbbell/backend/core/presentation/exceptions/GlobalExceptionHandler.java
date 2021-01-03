@@ -4,6 +4,9 @@ import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidEmailAddress;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidPasswordFormat;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
+import com.dumbbell.backend.exercises.domain.exceptions.InvalidDescription;
+import com.dumbbell.backend.exercises.domain.exceptions.InvalidDifficulty;
+import com.dumbbell.backend.exercises.domain.exceptions.InvalidName;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,19 +38,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(403).body(errorDetails);
     }
 
-    @ExceptionHandler(LoginFailed.class)
+    @ExceptionHandler(InvalidName.class)
     public ResponseEntity<ErrorDetails> invalidExerciseName() {
         ErrorDetails errorDetails = new ErrorDetails("Invalid name for the exercise");
         return ResponseEntity.status(422).body(errorDetails);
     }
 
-    @ExceptionHandler(LoginFailed.class)
+    @ExceptionHandler(InvalidDescription.class)
     public ResponseEntity<ErrorDetails> invalidExerciseDescription() {
         ErrorDetails errorDetails = new ErrorDetails("Invalid description for the exercise");
         return ResponseEntity.status(422).body(errorDetails);
     }
 
-    @ExceptionHandler(LoginFailed.class)
+    @ExceptionHandler(InvalidDifficulty.class)
     public ResponseEntity<ErrorDetails> invalidExerciseDifficulty() {
         ErrorDetails errorDetails = new ErrorDetails("Invalid difficulty for the exercise. Should be between 1 and 10.");
         return ResponseEntity.status(422).body(errorDetails);
