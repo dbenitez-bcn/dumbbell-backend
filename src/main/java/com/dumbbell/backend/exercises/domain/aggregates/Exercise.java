@@ -4,7 +4,9 @@ import com.dumbbell.backend.exercises.domain.valueObjects.Description;
 import com.dumbbell.backend.exercises.domain.valueObjects.Difficulty;
 import com.dumbbell.backend.exercises.domain.valueObjects.ExerciseId;
 import com.dumbbell.backend.exercises.domain.valueObjects.Name;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class Exercise {
     private final ExerciseId id;
     private final Name name;
@@ -26,6 +28,7 @@ public class Exercise {
     }
 
     public int getId() {
+        if (this.id == null) return 0;
         return this.id.getValue();
     }
 
