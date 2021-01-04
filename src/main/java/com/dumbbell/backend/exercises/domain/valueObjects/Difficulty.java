@@ -1,7 +1,9 @@
 package com.dumbbell.backend.exercises.domain.valueObjects;
 
 import com.dumbbell.backend.exercises.domain.exceptions.InvalidDifficulty;
+import lombok.Getter;
 
+@Getter
 public class Difficulty {
     private final int value;
 

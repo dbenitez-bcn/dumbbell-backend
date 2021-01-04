@@ -17,4 +17,27 @@ public class Exercise {
         this.description = new Description(description);
         this.difficulty = new Difficulty(difficulty);
     }
+
+    public Exercise(int id, String name, String description, int difficulty) {
+        this.id = new ExerciseId(id);
+        this.name = new Name(name);
+        this.description = new Description(description);
+        this.difficulty = new Difficulty(difficulty);
+    }
+
+    public int getId() {
+        return this.id.getValue();
+    }
+
+    public String getName() {
+        return this.name.getValue();
+    }
+
+    public String getDescription() {
+        return this.description.getValue();
+    }
+
+    public int getDifficulty() {
+        return this.difficulty.getValue();
+    }
 }
