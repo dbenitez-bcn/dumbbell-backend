@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static com.dumbbell.backend.exercises.ExerciseEntityFixture.muscleUpEntity;
-import static com.dumbbell.backend.exercises.ExerciseFixture.muscleUp;
+import static com.dumbbell.backend.exercises.ExerciseFixture.MUSCLE_UP;
 import static com.dumbbell.backend.exercises.ExerciseFixture.newExercise;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,13 +36,12 @@ class PostgresExerciseRepositoryTest {
 
     @Test
     void upsert_shouldCreateANewExercise() {
-        Exercise expected = muscleUp();
         Exercise exerciseToSave = newExercise();
         when(dataSource.save(any(ExerciseEntity.class))).thenReturn(muscleUpEntity());
 
         Exercise result = sut.upsert(exerciseToSave);
 
-        assertThat(result).isEqualTo(expected);
+        assertThat(result).isEqualTo(MUSCLE_UP);
         verify(dataSource).save(exerciseCaptor.capture());
         ExerciseEntity capturedExercise = exerciseCaptor.getValue();
         assertThat(capturedExercise.getId()).isEqualTo(exerciseToSave.getId());
