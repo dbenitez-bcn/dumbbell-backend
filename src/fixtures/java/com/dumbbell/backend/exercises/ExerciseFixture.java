@@ -21,6 +21,15 @@ public class ExerciseFixture {
                 .build();
     }
 
+    public static Exercise newExercise() {
+        return customExercise()
+                .withId(null)
+                .withName(AN_EXERCISE_NAME)
+                .withDescription(AN_EXERCISE_DESCRIPTION)
+                .withDifficulty(AN_EXERCISE_DIFFICULTY)
+                .build();
+    }
+
     public static class ExerciseBuilder {
         private Integer id = 23;
         private String name = "Muscle up";
