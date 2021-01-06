@@ -10,7 +10,10 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 import static com.dumbbell.backend.exercises.ExerciseFixture.*;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -57,5 +60,20 @@ class ExerciseControllerTest {
         assertThat(resultBody.name).isEqualTo(MUSCLE_UP.getName());
         assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
         assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
+    }
+
+    @Test
+    void getAll_shouldReturnAllExercises() {
+        when(exerciseService.getAll()).thenReturn(asList(MUSCLE_UP));
+
+        ResponseEntity<List<ExerciseResponse>> result = sut.getAll();
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        ExerciseResponse resultBody = result.getBody().get(0);
+        assertThat(resultBody.id).isEqualTo(MUSCLE_UP.getId());
+        assertThat(resultBody.name).isEqualTo(MUSCLE_UP.getName());
+        assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
+        assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
+
     }
 }

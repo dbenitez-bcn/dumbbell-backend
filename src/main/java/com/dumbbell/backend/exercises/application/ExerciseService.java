@@ -5,6 +5,8 @@ import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
@@ -19,5 +21,9 @@ public class ExerciseService {
         return exerciseRepository
                 .getById(id)
                 .orElseThrow(ExerciseNotFound::new);
+    }
+
+    public List<Exercise> getAll() {
+        return null;
     }
 }

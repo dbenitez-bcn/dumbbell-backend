@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 public class ExerciseController {
     private final ExerciseService exerciseService;
@@ -34,6 +37,16 @@ public class ExerciseController {
                 exercise.getName(),
                 exercise.getDescription(),
                 exercise.getDifficulty()
+        );
+    }
+
+    public ResponseEntity<List<ExerciseResponse>> getAll() {
+        return ResponseEntity.ok(
+                exerciseService
+                        .getAll()
+                        .stream()
+                        .map(this::mapExerciseToResponse)
+                        .collect(Collectors.toList())
         );
     }
 }
