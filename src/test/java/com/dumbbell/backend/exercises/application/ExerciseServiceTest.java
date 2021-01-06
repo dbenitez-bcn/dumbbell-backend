@@ -18,7 +18,7 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class ExerciseServiceTest {
@@ -76,6 +76,25 @@ class ExerciseServiceTest {
 
         assertThatThrownBy(() -> sut.getAll())
                 .isInstanceOf(ExercisesNotFound.class);
+    }
+
+    @Test
+    void delete_shouldDeleteAnExercise() {
+        willFindAnExercise(MUSCLE_UP);
+
+        sut.delete(AN_EXERCISE_ID);
+
+        verify(repository).delete(AN_EXERCISE_ID);
+    }
+
+    @Test
+    void delete_whenExerciseDontExist_shouldFail() {
+        willFindNoExercise();
+
+        assertThatThrownBy(() -> sut.delete(AN_EXERCISE_ID))
+                .isInstanceOf(ExerciseNotFound.class);
+
+        verify(repository, never()).delete(anyInt());
     }
 
     private void willFindAnExercise(Exercise exercise) {

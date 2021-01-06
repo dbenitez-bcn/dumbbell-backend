@@ -31,6 +31,7 @@ public class ExerciseService {
     }
 
     public void delete(int id) {
-
+        if (this.getById(id) != null)
+            exerciseRepository.delete(id);
     }
 }

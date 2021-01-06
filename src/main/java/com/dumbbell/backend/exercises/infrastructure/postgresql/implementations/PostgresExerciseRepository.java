@@ -44,6 +44,11 @@ public class PostgresExerciseRepository implements ExerciseRepository {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void delete(int id) {
+
+    }
+
     private Exercise entityToExercise(ExerciseEntity savedEntity) {
         return new Exercise(
                 savedEntity.getId(),

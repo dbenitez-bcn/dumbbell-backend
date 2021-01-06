@@ -11,4 +11,6 @@ public interface ExerciseRepository {
     Optional<Exercise> getById(int id);
 
     List<Exercise> getAll();
+
+    void delete(int id);
 }
