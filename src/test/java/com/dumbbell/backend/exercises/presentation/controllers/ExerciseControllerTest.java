@@ -15,6 +15,7 @@ import java.util.List;
 import static com.dumbbell.backend.exercises.ExerciseFixture.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -75,5 +76,13 @@ class ExerciseControllerTest {
         assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
         assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
 
+    }
+
+    @Test
+    void delete_shouldDeleteTheExercise() {
+        ResponseEntity result = sut.delete(AN_EXERCISE_ID);
+
+        verify(exerciseService).delete(AN_EXERCISE_ID);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 }

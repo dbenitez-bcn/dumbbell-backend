@@ -49,4 +49,9 @@ public class ExerciseController {
                         .collect(Collectors.toList())
         );
     }
+
+    public ResponseEntity delete(int id) {
+        exerciseService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

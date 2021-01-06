@@ -29,4 +29,8 @@ public class ExerciseService {
         if (exercises.isEmpty()) throw new ExercisesNotFound();
         return exercises;
     }
+
+    public void delete(int id) {
+
+    }
 }
