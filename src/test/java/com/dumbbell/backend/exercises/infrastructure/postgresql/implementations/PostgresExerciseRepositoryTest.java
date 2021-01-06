@@ -93,6 +93,13 @@ class PostgresExerciseRepositoryTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    void delete_shouldDeleteAnExercise() {
+        sut.delete(AN_EXERCISE_ID);
+
+        verify(dataSource).deleteById(AN_EXERCISE_ID);
+    }
+
     private void willFindAnExercise(ExerciseEntity entity) {
         when(dataSource.findById(entity.getId())).thenReturn(Optional.of(entity));
     }

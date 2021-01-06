@@ -46,7 +46,7 @@ public class PostgresExerciseRepository implements ExerciseRepository {
 
     @Override
     public void delete(int id) {
-
+        dataSource.deleteById(id);
     }
 
     private Exercise entityToExercise(ExerciseEntity savedEntity) {
