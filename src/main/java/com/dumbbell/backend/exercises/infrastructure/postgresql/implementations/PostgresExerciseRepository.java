@@ -5,6 +5,8 @@ import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class PostgresExerciseRepository implements ExerciseRepository {
 
@@ -27,5 +29,10 @@ public class PostgresExerciseRepository implements ExerciseRepository {
                 savedEntity.getDescription(),
                 savedEntity.getDifficulty()
         );
+    }
+
+    @Override
+    public Optional<Exercise> getById(int id) {
+        return Optional.empty();
     }
 }
