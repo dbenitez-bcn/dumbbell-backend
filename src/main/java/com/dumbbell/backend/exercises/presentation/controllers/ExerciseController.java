@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    public ResponseEntity<ExerciseResponse> create(ExerciseRequest exerciseRequest) {
+    public ResponseEntity<ExerciseResponse> create(ExerciseRequest request) {
         Exercise exercise = exerciseService.create(
-                exerciseRequest.name,
-                exerciseRequest.description,
-                exerciseRequest.difficulty
+                request.name,
+                request.description,
+                request.difficulty
         );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -52,6 +52,16 @@ public class ExerciseController {
 
     public ResponseEntity delete(int id) {
         exerciseService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity update(int id, ExerciseRequest request) {
+        exerciseService.update(
+                id,
+                request.name,
+                request.description,
+                request.difficulty
+        );
         return ResponseEntity.noContent().build();
     }
 }

@@ -21,6 +21,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 class ExerciseControllerTest {
 
+    private static final ExerciseRequest EXERCISE_REQUEST =
+            new ExerciseRequest(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY);
+
     @Mock
     private ExerciseService exerciseService;
 
@@ -37,9 +40,7 @@ class ExerciseControllerTest {
         when(exerciseService.create(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY))
                 .thenReturn(MUSCLE_UP);
 
-        ResponseEntity<ExerciseResponse> result = sut.create(
-                new ExerciseRequest(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY)
-        );
+        ResponseEntity<ExerciseResponse> result = sut.create(EXERCISE_REQUEST);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         ExerciseResponse resultBody = result.getBody();
@@ -84,5 +85,18 @@ class ExerciseControllerTest {
 
         verify(exerciseService).delete(AN_EXERCISE_ID);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void update_shouldUpdateAnExercise() {
+        ResponseEntity result = sut.update(
+                AN_EXERCISE_ID,
+                EXERCISE_REQUEST
+        );
+
+        verify(exerciseService)
+                .update(AN_EXERCISE_ID, AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
     }
 }

@@ -34,4 +34,8 @@ public class ExerciseService {
         if (this.getById(id) != null)
             exerciseRepository.delete(id);
     }
+
+    public void update(int id, String name, String description, int difficulty) {
+
+    }
 }
