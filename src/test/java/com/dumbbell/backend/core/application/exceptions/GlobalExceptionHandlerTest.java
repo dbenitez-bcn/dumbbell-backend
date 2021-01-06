@@ -77,4 +77,11 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
         assertThat(result.getBody().message).isEqualTo("Exercise not found");
     }
+    @Test
+    void exercisesNotFound_shouldHandleExercisesNotFound() {
+        ResponseEntity<ErrorDetails> result = sut.exercisesNotFound();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+        assertThat(result.getBody().message).isEqualTo("Exercises not found");
+    }
 }

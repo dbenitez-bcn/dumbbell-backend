@@ -4,10 +4,7 @@ import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidEmailAddress;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidPasswordFormat;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
-import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
-import com.dumbbell.backend.exercises.domain.exceptions.InvalidDescription;
-import com.dumbbell.backend.exercises.domain.exceptions.InvalidDifficulty;
-import com.dumbbell.backend.exercises.domain.exceptions.InvalidName;
+import com.dumbbell.backend.exercises.domain.exceptions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,6 +57,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExerciseNotFound.class)
     public ResponseEntity<ErrorDetails> exerciseNotFound() {
         ErrorDetails errorDetails = new ErrorDetails("Exercise not found");
+        return ResponseEntity.status(404).body(errorDetails);
+    }
+
+    @ExceptionHandler(ExercisesNotFound.class)
+    public ResponseEntity<ErrorDetails> exercisesNotFound() {
+        ErrorDetails errorDetails = new ErrorDetails("Exercises not found");
         return ResponseEntity.status(404).body(errorDetails);
     }
 }
