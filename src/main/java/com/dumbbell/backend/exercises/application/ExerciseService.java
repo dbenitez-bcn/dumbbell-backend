@@ -13,4 +13,8 @@ public class ExerciseService {
                 new Exercise(name, description, difficulty)
         );
     }
+
+    public Exercise getById(int id) {
+        return null;
+    }
 }

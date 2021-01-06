@@ -8,11 +8,13 @@ public class ExerciseFixture {
     public static final String AN_EXERCISE_DESCRIPTION = "First do a pull up and after passing your chest over the bar do a dip.";
     public static final Integer AN_EXERCISE_DIFFICULTY = 8;
 
+    public static final Exercise MUSCLE_UP = muscleUp();
+
     public static ExerciseBuilder customExercise() {
         return new ExerciseBuilder();
     }
 
-    public static Exercise muscleUp() {
+    private static Exercise muscleUp() {
         return customExercise()
                 .withId(AN_EXERCISE_ID)
                 .withName(AN_EXERCISE_NAME)

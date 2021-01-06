@@ -20,11 +20,20 @@ public class ExerciseController {
         );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ExerciseResponse(
-                        exercise.getId(),
-                        exercise.getName(),
-                        exercise.getDescription(),
-                        exercise.getDifficulty()
-                ));
+                .body(mapExerciseToResponse(exercise));
+    }
+
+    public ResponseEntity<ExerciseResponse> getById(int id) {
+        Exercise exercise = exerciseService.getById(id);
+        return ResponseEntity.ok(mapExerciseToResponse(exercise));
+    }
+
+    private ExerciseResponse mapExerciseToResponse(Exercise exercise) {
+        return new ExerciseResponse(
+                exercise.getId(),
+                exercise.getName(),
+                exercise.getDescription(),
+                exercise.getDifficulty()
+        );
     }
 }

@@ -1,7 +1,6 @@
 package com.dumbbell.backend.exercises.presentation.controllers;
 
 import com.dumbbell.backend.exercises.application.ExerciseService;
-import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
 import com.dumbbell.backend.exercises.presentation.request.ExerciseRequest;
 import com.dumbbell.backend.exercises.presentation.responses.ExerciseResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,9 +30,8 @@ class ExerciseControllerTest {
 
     @Test
     void create_shouldCreateANewExercise() {
-        Exercise muscleUp = muscleUp();
         when(exerciseService.create(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY))
-                .thenReturn(muscleUp);
+                .thenReturn(MUSCLE_UP);
 
         ResponseEntity<ExerciseResponse> result = sut.create(
                 new ExerciseRequest(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY)
@@ -41,9 +39,23 @@ class ExerciseControllerTest {
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         ExerciseResponse resultBody = result.getBody();
-        assertThat(resultBody.id).isEqualTo(muscleUp.getId());
-        assertThat(resultBody.name).isEqualTo(muscleUp.getName());
-        assertThat(resultBody.description).isEqualTo(muscleUp.getDescription());
-        assertThat(resultBody.difficulty).isEqualTo(muscleUp.getDifficulty());
+        assertThat(resultBody.id).isEqualTo(MUSCLE_UP.getId());
+        assertThat(resultBody.name).isEqualTo(MUSCLE_UP.getName());
+        assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
+        assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
+    }
+
+    @Test
+    void getById_shouldReturnAnExercise() {
+        when(exerciseService.getById(AN_EXERCISE_ID)).thenReturn(MUSCLE_UP);
+
+        ResponseEntity<ExerciseResponse> result = sut.getById(AN_EXERCISE_ID);
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        ExerciseResponse resultBody = result.getBody();
+        assertThat(resultBody.id).isEqualTo(MUSCLE_UP.getId());
+        assertThat(resultBody.name).isEqualTo(MUSCLE_UP.getName());
+        assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
+        assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
     }
 }

@@ -27,7 +27,7 @@ class ExerciseServiceTest {
 
     @Test
     void create_shouldCreateTheExercise() {
-        Exercise expectedExercise = muscleUp();
+        Exercise expectedExercise = MUSCLE_UP;
         when(repository.upsert(customExercise().withId(null).build())).thenReturn(expectedExercise);
 
         Exercise result = sut.create(AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY);
