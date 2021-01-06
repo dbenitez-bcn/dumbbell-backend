@@ -6,6 +6,7 @@ import com.dumbbell.backend.exercises.domain.exceptions.ExercisesNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -95,6 +96,35 @@ class ExerciseServiceTest {
                 .isInstanceOf(ExerciseNotFound.class);
 
         verify(repository, never()).delete(anyInt());
+    }
+
+    @Test
+    void update_shouldUpdateAnExercise() {
+        ArgumentCaptor<Exercise> exerciseCaptor = ArgumentCaptor.forClass(Exercise.class);
+        willFindAnExercise(MUSCLE_UP);
+
+        sut.update(
+                MUSCLE_UP.getId(),
+                "new name",
+                "mew description",
+                2
+        );
+
+        verify(repository).upsert(exerciseCaptor.capture());
+        Exercise capturedExercise = exerciseCaptor.getValue();
+        assertThat(capturedExercise.getId()).isEqualTo(MUSCLE_UP.getId());
+        assertThat(capturedExercise.getName()).isEqualTo("new name");
+        assertThat(capturedExercise.getDescription()).isEqualTo("mew description");
+        assertThat(capturedExercise.getDifficulty()).isEqualTo(2);
+    }
+
+    @Test
+    void update_whenExerciseDoesntExist_shouldFail() {
+        willFindNoExercise();
+
+        assertThatThrownBy(
+                () -> sut.update(AN_EXERCISE_ID, AN_EXERCISE_NAME, AN_EXERCISE_DESCRIPTION, AN_EXERCISE_DIFFICULTY)
+        ).isInstanceOf(ExerciseNotFound.class);
     }
 
     private void willFindAnExercise(Exercise exercise) {

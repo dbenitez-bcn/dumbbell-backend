@@ -36,6 +36,8 @@ public class ExerciseService {
     }
 
     public void update(int id, String name, String description, int difficulty) {
-
+        Exercise exercise = getById(id);
+        exercise.update(name, description, difficulty);
+        exerciseRepository.upsert(exercise);
     }
 }

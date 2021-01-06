@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Exercise {
-    private final ExerciseId id;
-    private final Name name;
-    private final Description description;
-    private final Difficulty difficulty;
+    private ExerciseId id;
+    private Name name;
+    private Description description;
+    private Difficulty difficulty;
 
     public Exercise(String name, String description, int difficulty) {
         this.id = null;
@@ -42,5 +42,11 @@ public class Exercise {
 
     public int getDifficulty() {
         return this.difficulty.getValue();
+    }
+
+    public void update(String name, String description, int difficulty) {
+        this.name = new Name(name);
+        this.description = new Description(description);
+        this.difficulty = new Difficulty(difficulty);
     }
 }
