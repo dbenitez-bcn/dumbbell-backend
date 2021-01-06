@@ -2,6 +2,7 @@ package com.dumbbell.backend.exercises.application;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
 import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
+import com.dumbbell.backend.exercises.domain.exceptions.ExercisesNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,8 @@ public class ExerciseService {
     }
 
     public List<Exercise> getAll() {
-        return null;
+        List<Exercise> exercises = exerciseRepository.getAll();
+        if (exercises.isEmpty()) throw new ExercisesNotFound();
+        return exercises;
     }
 }

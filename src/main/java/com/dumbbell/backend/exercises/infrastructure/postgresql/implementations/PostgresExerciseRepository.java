@@ -5,6 +5,7 @@ import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,6 +32,11 @@ public class PostgresExerciseRepository implements ExerciseRepository {
         return dataSource
                 .findById(id)
                 .map(this::entityToExercise);
+    }
+
+    @Override
+    public List<Exercise> getAll() {
+        return null;
     }
 
     private Exercise entityToExercise(ExerciseEntity savedEntity) {
