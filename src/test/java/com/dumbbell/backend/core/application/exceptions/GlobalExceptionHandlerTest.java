@@ -69,4 +69,12 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(422);
         assertThat(result.getBody().message).isEqualTo("Invalid difficulty for the exercise. Should be between 1 and 10.");
     }
+
+    @Test
+    void exerciseNotFound_shouldHandleExerciseNotFound() {
+        ResponseEntity<ErrorDetails> result = sut.exerciseNotFound();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+        assertThat(result.getBody().message).isEqualTo("Exercise not found");
+    }
 }

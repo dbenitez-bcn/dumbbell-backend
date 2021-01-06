@@ -4,6 +4,7 @@ import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidEmailAddress;
 import com.dumbbell.backend.accounts.domain.exceptions.InvalidPasswordFormat;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
+import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
 import com.dumbbell.backend.exercises.domain.exceptions.InvalidDescription;
 import com.dumbbell.backend.exercises.domain.exceptions.InvalidDifficulty;
 import com.dumbbell.backend.exercises.domain.exceptions.InvalidName;
@@ -54,5 +55,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> invalidExerciseDifficulty() {
         ErrorDetails errorDetails = new ErrorDetails("Invalid difficulty for the exercise. Should be between 1 and 10.");
         return ResponseEntity.status(422).body(errorDetails);
+    }
+
+    @ExceptionHandler(ExerciseNotFound.class)
+    public ResponseEntity<ErrorDetails> exerciseNotFound() {
+        ErrorDetails errorDetails = new ErrorDetails("Exercise not found");
+        return ResponseEntity.status(404).body(errorDetails);
     }
 }
