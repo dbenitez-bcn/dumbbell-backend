@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class PostgresExerciseRepository implements ExerciseRepository {
@@ -36,7 +37,11 @@ public class PostgresExerciseRepository implements ExerciseRepository {
 
     @Override
     public List<Exercise> getAll() {
-        return null;
+        return dataSource
+                .findAll()
+                .stream()
+                .map(this::entityToExercise)
+                .collect(Collectors.toList());
     }
 
     private Exercise entityToExercise(ExerciseEntity savedEntity) {

@@ -9,12 +9,15 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.dumbbell.backend.exercises.ExerciseEntityFixture.AN_EXERCISE_ID;
 import static com.dumbbell.backend.exercises.ExerciseEntityFixture.MUSCLE_UP_ENTITY;
 import static com.dumbbell.backend.exercises.ExerciseFixture.MUSCLE_UP;
 import static com.dumbbell.backend.exercises.ExerciseFixture.NEW_EXERCISE;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -68,6 +71,24 @@ class PostgresExerciseRepositoryTest {
         willFindNoExercise();
 
         Optional<Exercise> result = sut.getById(AN_EXERCISE_ID);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void getAll_shouldReturnAnExerciseList() {
+        when(dataSource.findAll()).thenReturn(asList(MUSCLE_UP_ENTITY));
+
+        List<Exercise> result = sut.getAll();
+
+        assertThat(result).containsOnly(MUSCLE_UP);
+    }
+
+    @Test
+    void getAll_whenNoExerciseAreFound_shouldReturnAnEmptyList() {
+        when(dataSource.findAll()).thenReturn(emptyList());
+
+        List<Exercise> result = sut.getAll();
 
         assertThat(result).isEmpty();
     }
