@@ -9,6 +9,7 @@ public class ExerciseFixture {
     public static final Integer AN_EXERCISE_DIFFICULTY = 8;
 
     public static final Exercise MUSCLE_UP = muscleUp();
+    public static final Exercise NEW_EXERCISE = newExercise();
 
     public static ExerciseBuilder customExercise() {
         return new ExerciseBuilder();
@@ -23,7 +24,7 @@ public class ExerciseFixture {
                 .build();
     }
 
-    public static Exercise newExercise() {
+    private static Exercise newExercise() {
         return customExercise()
                 .withId(null)
                 .withName(AN_EXERCISE_NAME)

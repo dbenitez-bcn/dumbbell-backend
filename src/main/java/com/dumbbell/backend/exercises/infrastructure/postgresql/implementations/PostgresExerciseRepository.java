@@ -23,16 +23,22 @@ public class PostgresExerciseRepository implements ExerciseRepository {
                 )
         );
 
+        return entityToExercise(savedEntity);
+    }
+
+    @Override
+    public Optional<Exercise> getById(int id) {
+        return dataSource
+                .findById(id)
+                .map(this::entityToExercise);
+    }
+
+    private Exercise entityToExercise(ExerciseEntity savedEntity) {
         return new Exercise(
                 savedEntity.getId(),
                 savedEntity.getName(),
                 savedEntity.getDescription(),
                 savedEntity.getDifficulty()
         );
-    }
-
-    @Override
-    public Optional<Exercise> getById(int id) {
-        return Optional.empty();
     }
 }
