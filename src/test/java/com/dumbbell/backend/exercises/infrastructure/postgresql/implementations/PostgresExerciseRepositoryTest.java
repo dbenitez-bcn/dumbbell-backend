@@ -62,7 +62,8 @@ class PostgresExerciseRepositoryTest {
 
         Optional<Exercise> result = sut.getById(AN_EXERCISE_ID);
 
-        assertThat(result).contains(MUSCLE_UP);
+        assertThat(result).isNotEmpty();
+        assertEquality(MUSCLE_UP, result.get());
     }
 
 
@@ -81,7 +82,8 @@ class PostgresExerciseRepositoryTest {
 
         List<Exercise> result = sut.getAll();
 
-        assertThat(result).containsOnly(MUSCLE_UP);
+        assertThat(result).hasSize(1);
+        assertEquality(MUSCLE_UP, result.get(0));
     }
 
     @Test
@@ -107,4 +109,12 @@ class PostgresExerciseRepositoryTest {
     private void willFindNoExercise() {
         when(dataSource.findById(anyInt())).thenReturn(Optional.empty());
     }
+
+    private void assertEquality(Exercise expected, Exercise result) {
+        assertThat(expected.getId()).isEqualTo(result.getId());
+        assertThat(expected.getName()).isEqualTo(result.getName());
+        assertThat(expected.getDescription()).isEqualTo(result.getDescription());
+        assertThat(expected.getDifficulty()).isEqualTo(result.getDifficulty());
+    }
+
 }
