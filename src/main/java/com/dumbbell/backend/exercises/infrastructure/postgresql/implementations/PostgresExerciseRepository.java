@@ -4,12 +4,14 @@ import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Repository
 public class PostgresExerciseRepository implements ExerciseRepository {
 
     private final ExerciseDataSource dataSource;

@@ -5,10 +5,12 @@ import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
 import com.dumbbell.backend.exercises.domain.exceptions.ExercisesNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 

@@ -5,9 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "exercises", schema = "exercises")
@@ -17,6 +15,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode
 public class ExerciseEntity {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String description;

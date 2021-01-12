@@ -7,15 +7,18 @@ import com.dumbbell.backend.exercises.presentation.responses.ExerciseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@RestController
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    public ResponseEntity<ExerciseResponse> create(ExerciseRequest request) {
+    @PostMapping("/exercise")
+    public ResponseEntity<ExerciseResponse> create(@RequestBody ExerciseRequest request) {
         Exercise exercise = exerciseService.create(
                 request.name,
                 request.description,
@@ -26,20 +29,13 @@ public class ExerciseController {
                 .body(mapExerciseToResponse(exercise));
     }
 
-    public ResponseEntity<ExerciseResponse> getById(int id) {
+    @GetMapping("/exercise/{id}")
+    public ResponseEntity<ExerciseResponse> getById(@PathVariable("id") int id) {
         Exercise exercise = exerciseService.getById(id);
         return ResponseEntity.ok(mapExerciseToResponse(exercise));
     }
 
-    private ExerciseResponse mapExerciseToResponse(Exercise exercise) {
-        return new ExerciseResponse(
-                exercise.getId(),
-                exercise.getName(),
-                exercise.getDescription(),
-                exercise.getDifficulty()
-        );
-    }
-
+    @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseResponse>> getAll() {
         return ResponseEntity.ok(
                 exerciseService
@@ -50,12 +46,14 @@ public class ExerciseController {
         );
     }
 
-    public ResponseEntity delete(int id) {
+    @DeleteMapping("/exercise/{id}")
+    public ResponseEntity delete(@PathVariable("id") int id) {
         exerciseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity update(int id, ExerciseRequest request) {
+    @PutMapping("/exercise/{id}")
+    public ResponseEntity update(@PathVariable("id") int id, @RequestBody ExerciseRequest request) {
         exerciseService.update(
                 id,
                 request.name,
@@ -63,5 +61,14 @@ public class ExerciseController {
                 request.difficulty
         );
         return ResponseEntity.noContent().build();
+    }
+
+    private ExerciseResponse mapExerciseToResponse(Exercise exercise) {
+        return new ExerciseResponse(
+                exercise.getId(),
+                exercise.getName(),
+                exercise.getDescription(),
+                exercise.getDifficulty()
+        );
     }
 }
