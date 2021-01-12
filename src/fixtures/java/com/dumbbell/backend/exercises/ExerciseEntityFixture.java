@@ -3,7 +3,7 @@ package com.dumbbell.backend.exercises;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 
 public class ExerciseEntityFixture {
-    public static final Integer AN_EXERCISE_ID = 23;
+    public static final Integer AN_EXERCISE_ID = 1;
     public static final String AN_EXERCISE_NAME = "Muscle up";
     public static final String AN_EXERCISE_DESCRIPTION = "First do a pull up and after passing your chest over the bar do a dip.";
     public static final Integer AN_EXERCISE_DIFFICULTY = 8;
@@ -24,7 +24,7 @@ public class ExerciseEntityFixture {
     }
 
     public static class ExerciseEntityBuilder {
-        private Integer id = 23;
+        private Integer id = 1;
         private String name = "Muscle up";
         private String description = "First do a pull up and after passing your chest over the bar do a dip.";
         private Integer difficulty = 8;
