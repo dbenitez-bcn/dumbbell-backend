@@ -101,20 +101,20 @@ class ExerciseServiceTest {
     @Test
     void update_shouldUpdateAnExercise() {
         ArgumentCaptor<Exercise> exerciseCaptor = ArgumentCaptor.forClass(Exercise.class);
-        willFindAnExercise(MUSCLE_UP);
+        willFindAnExercise(customExercise().withId(AN_EXERCISE_ID).build());
 
         sut.update(
-                MUSCLE_UP.getId(),
+                AN_EXERCISE_ID,
                 "new name",
-                "mew description",
+                "new description",
                 2
         );
 
         verify(repository).upsert(exerciseCaptor.capture());
         Exercise capturedExercise = exerciseCaptor.getValue();
-        assertThat(capturedExercise.getId()).isEqualTo(MUSCLE_UP.getId());
+        assertThat(capturedExercise.getId()).isEqualTo(AN_EXERCISE_ID);
         assertThat(capturedExercise.getName()).isEqualTo("new name");
-        assertThat(capturedExercise.getDescription()).isEqualTo("mew description");
+        assertThat(capturedExercise.getDescription()).isEqualTo("new description");
         assertThat(capturedExercise.getDifficulty()).isEqualTo(2);
     }
 
