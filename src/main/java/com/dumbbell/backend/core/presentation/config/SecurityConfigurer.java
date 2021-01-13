@@ -26,7 +26,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(tokenValidationFilter, AuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login", "/register").permitAll()
-                .antMatchers(HttpMethod.GET, "/exercises", "/exercises/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/exercises", "/exercise/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

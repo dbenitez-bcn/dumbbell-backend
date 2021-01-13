@@ -1,4 +1,4 @@
-package com.dumbbell.backend.accounts.utils;
+package com.dumbbell.backend.utils;
 
 
 import org.json.JSONObject;
@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -109,5 +110,31 @@ public abstract class ApplicationTestCase {
                 .perform(request(method, endpoint))
                 .andExpect(status().is(expectedStatusCode))
                 .andExpect(content().string(""));
+    }
+
+    protected RequestAssertor assertRequest(
+            HttpMethod method,
+            String endpoint
+    ) throws Exception {
+        ResultActions perform = mockMvc.perform(request(method, endpoint));
+        return new RequestAssertor(perform);
+    }
+
+    protected static class RequestAssertor {
+        private final ResultActions sut;
+
+        private RequestAssertor(ResultActions sut) {
+            this.sut = sut;
+        }
+
+        public RequestAssertor withCode(int expectedCode) throws Exception {
+            sut.andExpect(status().is(expectedCode));
+            return this;
+        }
+
+        public RequestAssertor withResponse(JSONObject expectedResponse) throws Exception {
+            sut.andExpect(content().json(expectedResponse.toString()));
+            return this;
+        }
     }
 }

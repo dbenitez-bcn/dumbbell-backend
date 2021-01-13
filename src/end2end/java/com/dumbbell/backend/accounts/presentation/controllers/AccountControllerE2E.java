@@ -1,6 +1,6 @@
 package com.dumbbell.backend.accounts.presentation.controllers;
 
-import com.dumbbell.backend.accounts.utils.ApplicationTestCase;
+import com.dumbbell.backend.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
