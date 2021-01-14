@@ -120,6 +120,20 @@ public abstract class ApplicationTestCase {
         return new RequestAssertor(perform);
     }
 
+    protected RequestAssertor assertRequest(
+            HttpMethod method,
+            String endpoint,
+            JSONObject body,
+            String token
+    ) throws Exception {
+        ResultActions perform = mockMvc.perform(
+                request(method, endpoint)
+        .content(body.toString())
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+        .header(HttpHeaders.CONTENT_TYPE, "application/json"));
+        return new RequestAssertor(perform);
+    }
+
     protected static class RequestAssertor {
         private final ResultActions sut;
 
@@ -135,6 +149,16 @@ public abstract class ApplicationTestCase {
         public RequestAssertor withResponse(JSONObject expectedResponse) throws Exception {
             sut.andExpect(content().json(expectedResponse.toString()));
             return this;
+        }
+
+        public JSONObject getResponseBody() {
+            try {
+                return new JSONObject(
+                        sut.andReturn().getResponse().getContentAsString()
+                );
+            } catch (Exception e) {
+                return new JSONObject();
+            }
         }
     }
 }
