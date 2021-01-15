@@ -178,6 +178,30 @@ public abstract class ApplicationTestCase {
             return this;
         }
 
+        public EndpointRequest get(String path) {
+            this.method = HttpMethod.GET;
+            this.path = path;
+            return this;
+        }
+
+        public EndpointRequest post(String path) {
+            this.method = HttpMethod.POST;
+            this.path = path;
+            return this;
+        }
+
+        public EndpointRequest put(String path) {
+            this.method = HttpMethod.PUT;
+            this.path = path;
+            return this;
+        }
+
+        public EndpointRequest delete(String path) {
+            this.method = HttpMethod.DELETE;
+            this.path = path;
+            return this;
+        }
+
         public RequestAssertor thenAssert() throws Exception {
             ResultActions perform = mockMvc.perform(
                     request(method, path)

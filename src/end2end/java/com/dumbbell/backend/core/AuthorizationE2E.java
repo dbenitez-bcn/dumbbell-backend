@@ -14,9 +14,8 @@ public class AuthorizationE2E extends ApplicationTestCase {
     @Test
     void givenWrongBearerFormat_shouldFail() throws Exception {
         endpointRequest()
-                .path("/")
+                .get("/")
                 .authorization("BaReR wrong_token")
-                .method(HttpMethod.GET)
                 .thenAssert()
                 .withCode(403);
     }
@@ -24,7 +23,7 @@ public class AuthorizationE2E extends ApplicationTestCase {
     @Test
     void givenNoAuthorization_shouldFail() throws Exception {
         endpointRequest()
-                .path("/")
+                .get("/")
                 .authorization("")
                 .method(HttpMethod.GET)
                 .thenAssert()
@@ -36,9 +35,8 @@ public class AuthorizationE2E extends ApplicationTestCase {
         String wrongToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
         endpointRequest()
-                .path("/")
+                .get("/")
                 .authorization("Bearer " + wrongToken)
-                .method(HttpMethod.GET)
                 .thenAssert()
                 .withCode(403);
     }
@@ -48,9 +46,8 @@ public class AuthorizationE2E extends ApplicationTestCase {
         String expiredToken = generateExpiredToken(UUID.randomUUID().toString());
 
         endpointRequest()
-                .path("/")
+                .get("/")
                 .authorization("Bearer " + expiredToken)
-                .method(HttpMethod.GET)
                 .thenAssert()
                 .withCode(403);
     }
@@ -59,9 +56,8 @@ public class AuthorizationE2E extends ApplicationTestCase {
     void givenAToken_whenSubjectIsNull_shouldFail() throws Exception {
         String expiredToken = generateExpiredToken(null);
         endpointRequest()
-                .path("/")
+                .get("/")
                 .authorization("Bearer " + expiredToken)
-                .method(HttpMethod.GET)
                 .thenAssert()
                 .withCode(403);
     }
