@@ -128,10 +128,66 @@ public abstract class ApplicationTestCase {
     ) throws Exception {
         ResultActions perform = mockMvc.perform(
                 request(method, endpoint)
-        .content(body.toString())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-        .header(HttpHeaders.CONTENT_TYPE, "application/json"));
+                        .content(body.toString())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                        .header(HttpHeaders.CONTENT_TYPE, "application/json"));
         return new RequestAssertor(perform);
+    }
+
+    protected EndpointRequest endpointRequest() {
+        return new EndpointRequest(mockMvc);
+    }
+
+    protected static class EndpointRequest {
+        private final MockMvc mockMvc;
+
+        private HttpMethod method;
+        private String path;
+        private String body;
+        private String authorization;
+
+        private EndpointRequest(MockMvc mockMvc) {
+            this.mockMvc = mockMvc;
+            this.method = HttpMethod.GET;
+            this.path = "/";
+            this.body = "{}";
+            this.authorization = "";
+        }
+
+        public EndpointRequest method(HttpMethod value) {
+            this.method = value;
+            return this;
+        }
+
+        public EndpointRequest path(String value) {
+            this.path = value;
+            return this;
+        }
+
+        public EndpointRequest body(JSONObject value) {
+            return this.body(value.toString());
+        }
+
+        public EndpointRequest body(String value) {
+            this.body = value;
+            return this;
+        }
+
+        public EndpointRequest authorization(String value) {
+            this.authorization = value;
+            return this;
+        }
+
+        public RequestAssertor thenAssert() throws Exception {
+            ResultActions perform = mockMvc.perform(
+                    request(method, path)
+                            .content(body)
+                            .header(HttpHeaders.AUTHORIZATION, authorization)
+                            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            );
+            return new RequestAssertor(perform);
+
+        }
     }
 
     protected static class RequestAssertor {
