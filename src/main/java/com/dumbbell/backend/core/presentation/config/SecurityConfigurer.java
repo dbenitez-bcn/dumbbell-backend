@@ -26,7 +26,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(tokenValidationFilter, AuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login", "/register").permitAll()
-                .antMatchers(HttpMethod.GET, "/exercises", "/exercise/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/exercises", "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/exercise").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/exercise/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/exercise/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

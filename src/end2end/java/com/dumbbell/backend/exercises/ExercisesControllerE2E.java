@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ExercisesControllerE2E extends ApplicationTestCase {
 
     @Autowired
@@ -16,48 +18,33 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
 
     @Test
     void shouldFailWhenNoExercisesExist() throws Exception {
-        JSONObject response = new JSONObject();
-        response.put("message", "Exercises not found");
-
-        endpointRequest()
+        Object result = endpointRequest()
                 .get("/exercises")
+                .authorization(createUserToken())
                 .thenAssert()
                 .withCode(404)
-                .withResponse(response);
+                .getResponseBody()
+                .get("message");
+
+        assertThat(result).isEqualTo("Exercises not found");
     }
 
     @Test
     void adminCreatesUpdatesAndDeletesAnExercise() throws Exception {
         String token = createAdminToken();
-        int id = createAnExercise(token);
-        updateAnExercise(token, id);
-        deleteAnExercise(token, id);
-        exerciseDoesNotExist(id);
-
-    }
-
-    private int createAnExercise(String token) throws Exception {
         JSONObject body = new JSONObject();
         body.put("name", "Exercise name");
         body.put("description", "Exercise description");
         body.put("difficulty", 5);
 
-        JSONObject result = endpointRequest()
+        int id = (int) endpointRequest()
                 .post("/exercise")
                 .authorization(token)
                 .body(body)
                 .thenAssert()
                 .withCode(201)
-                .getResponseBody();
-
-        return (int) result.get("id");
-    }
-
-    private void updateAnExercise(String token, int id) throws Exception {
-        JSONObject body = new JSONObject();
-        body.put("name", "Exercise name");
-        body.put("description", "Exercise description");
-        body.put("difficulty", 5);
+                .getResponseBody()
+                .get("id");
 
         endpointRequest()
                 .put("/exercise/" + id)
@@ -65,26 +52,59 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
                 .body(body)
                 .thenAssert()
                 .withCode(204);
-    }
 
-    private void deleteAnExercise(String token, int id) throws Exception {
         endpointRequest()
                 .delete("/exercise/" + id)
                 .authorization(token)
                 .thenAssert()
                 .withCode(204);
-    }
 
-    private void exerciseDoesNotExist(int id) throws Exception {
         endpointRequest()
                 .get("/exercise/" + id)
+                .authorization(token)
                 .thenAssert()
                 .withCode(404);
+
+    }
+
+    @Test
+    void aUserCanNotCreateAnExercise() throws Exception {
+        endpointRequest()
+                .post("/exercise")
+                .authorization(createUserToken())
+                .thenAssert()
+                .withCode(403);
+    }
+
+    @Test
+    void aUserCanNotDeleteAnExercise() throws Exception {
+        endpointRequest()
+                .delete("/exercise/666")
+                .authorization(createUserToken())
+                .thenAssert()
+                .withCode(403);
+    }
+
+    @Test
+    void aUserCanNotUpdateAnExercise() throws Exception {
+        endpointRequest()
+                .put("/exercise/666")
+                .authorization(createUserToken())
+                .thenAssert()
+                .withCode(403);
     }
 
     private String createAdminToken() {
+        return createToken("ADMIN");
+    }
+
+    private String createUserToken() {
+        return createToken("USER");
+    }
+
+    private String createToken(String role) {
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("role", "ADMIN");
+        claims.put("role", role);
         return "Bearer " + jwtUtils.generateToken(UUID.randomUUID().toString(), claims);
     }
 }
