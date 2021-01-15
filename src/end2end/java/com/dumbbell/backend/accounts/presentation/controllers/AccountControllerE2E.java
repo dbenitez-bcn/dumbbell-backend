@@ -4,16 +4,21 @@ import com.dumbbell.backend.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-import static org.springframework.http.HttpMethod.POST;
-
 class AccountControllerE2E extends ApplicationTestCase {
     @Test
     void whenUserIntroducesWrongCredentialsShouldFail() throws Exception {
         JSONObject body = new JSONObject();
         body.put("email", "fake@biblioteca.com");
         body.put("password", "wrongPassword1234");
+        JSONObject expectedResponse = new JSONObject();
+        expectedResponse.put("message", "Invalid email or password");
 
-        assertRequestWithBody(POST, "/login", body, 403);
+        endpointRequest()
+                .post("/login")
+                .body(body)
+                .thenAssert()
+                .withCode(403)
+                .withResponse(expectedResponse);
     }
 
     @Test
@@ -22,7 +27,16 @@ class AccountControllerE2E extends ApplicationTestCase {
         body.put("email", "testerino@biblioteca.com");
         body.put("password", "password1234");
 
-        assertRequestWithBody(POST, "/register", body, 200);
-        assertRequestWithBody(POST, "/login", body, 200);
+        endpointRequest()
+                .post("/register")
+                .body(body)
+                .thenAssert()
+                .withCode(201);
+
+        endpointRequest()
+                .post("/login")
+                .body(body)
+                .thenAssert()
+                .withCode(200);
     }
 }

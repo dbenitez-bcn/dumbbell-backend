@@ -7,6 +7,8 @@ import com.dumbbell.backend.accounts.presentation.request.RegisterRequest;
 import com.dumbbell.backend.accounts.presentation.responses.LoginResponse;
 import com.dumbbell.backend.core.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +22,9 @@ public class AccountController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest requestVM) {
+    public ResponseEntity register(@RequestBody RegisterRequest requestVM) {
         accountService.register(requestVM.email, requestVM.password);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")

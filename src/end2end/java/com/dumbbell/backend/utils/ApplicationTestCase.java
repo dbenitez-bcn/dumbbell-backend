@@ -231,6 +231,11 @@ public abstract class ApplicationTestCase {
             return this;
         }
 
+        public RequestAssertor withResponse(String expectedResponse) throws Exception {
+            sut.andExpect(content().string(expectedResponse));
+            return this;
+        }
+
         public JSONObject getResponseBody() {
             try {
                 return new JSONObject(
