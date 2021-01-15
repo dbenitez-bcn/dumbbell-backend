@@ -5,7 +5,6 @@ import com.dumbbell.backend.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -19,12 +18,10 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     void shouldFailWhenNoExercisesExist() throws Exception {
         JSONObject response = new JSONObject();
         response.put("message", "Exercises not found");
-        assertRequest(HttpMethod.GET, "/exercises")
-                .withCode(404)
-                .withResponse(response);
 
-        response.put("message", "Exercise not found");
-        assertRequest(HttpMethod.GET, "/exercise/1234")
+        endpointRequest()
+                .get("/exercises")
+                .thenAssert()
                 .withCode(404)
                 .withResponse(response);
     }
@@ -35,6 +32,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
         int id = createAnExercise(token);
         updateAnExercise(token, id);
         deleteAnExercise(token, id);
+        exerciseDoesNotExist(id);
 
     }
 
@@ -44,7 +42,11 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
         body.put("description", "Exercise description");
         body.put("difficulty", 5);
 
-        JSONObject result = assertRequest(HttpMethod.POST, "/exercise", body, token)
+        JSONObject result = endpointRequest()
+                .post("/exercise")
+                .authorization(token)
+                .body(body)
+                .thenAssert()
                 .withCode(201)
                 .getResponseBody();
 
@@ -57,19 +59,32 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
         body.put("description", "Exercise description");
         body.put("difficulty", 5);
 
-        assertRequest(HttpMethod.PUT, "/exercise/" + id, body, token)
+        endpointRequest()
+                .put("/exercise/" + id)
+                .authorization(token)
+                .body(body)
+                .thenAssert()
                 .withCode(204);
     }
 
     private void deleteAnExercise(String token, int id) throws Exception {
-
-        assertRequest(HttpMethod.DELETE, "/exercise/" + id, new JSONObject(), token)
+        endpointRequest()
+                .delete("/exercise/" + id)
+                .authorization(token)
+                .thenAssert()
                 .withCode(204);
+    }
+
+    private void exerciseDoesNotExist(int id) throws Exception {
+        endpointRequest()
+                .get("/exercise/" + id)
+                .thenAssert()
+                .withCode(404);
     }
 
     private String createAdminToken() {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role", "ADMIN");
-        return jwtUtils.generateToken(UUID.randomUUID().toString(), claims);
+        return "Bearer " + jwtUtils.generateToken(UUID.randomUUID().toString(), claims);
     }
 }
