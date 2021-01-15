@@ -3,7 +3,6 @@ package com.dumbbell.backend.core;
 import com.dumbbell.backend.utils.ApplicationTestCase;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 
@@ -35,8 +34,6 @@ public class AuthorizationE2E extends ApplicationTestCase {
     @Test
     void givenAToken_whenIsNotSigned_shouldFail() throws Exception {
         String wrongToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-        JSONObject expectedResponse = new JSONObject();
-        expectedResponse.put("message", "Invalid token");
 
         endpointRequest()
                 .path("/")
@@ -49,9 +46,18 @@ public class AuthorizationE2E extends ApplicationTestCase {
     @Test
     void givenAToken_whenIsExpired_shouldFail() throws Exception {
         String expiredToken = generateExpiredToken(UUID.randomUUID().toString());
-        JSONObject expectedResponse = new JSONObject();
-        expectedResponse.put("message", "Invalid token");
 
+        endpointRequest()
+                .path("/")
+                .authorization("Bearer " + expiredToken)
+                .method(HttpMethod.GET)
+                .thenAssert()
+                .withCode(403);
+    }
+
+    @Test
+    void givenAToken_whenSubjectIsNull_shouldFail() throws Exception {
+        String expiredToken = generateExpiredToken(null);
         endpointRequest()
                 .path("/")
                 .authorization("Bearer " + expiredToken)
