@@ -1,5 +1,6 @@
 package com.dumbbell.backend.accounts.infrastructure.postgresql.entities;
 
+import com.dumbbell.backend.core.infrastructure.DumbbellEntity;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class AccountEntity {
+public class AccountEntity extends DumbbellEntity {
     @Id
     private UUID id;
     @Column(unique = true)
