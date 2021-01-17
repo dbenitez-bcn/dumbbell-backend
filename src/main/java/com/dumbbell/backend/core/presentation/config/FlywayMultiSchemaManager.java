@@ -1,6 +1,5 @@
 package com.dumbbell.backend.core.presentation.config;
 
-import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 
 @Component
-@RequiredArgsConstructor
 public class FlywayMultiSchemaManager implements FlywayMigrationStrategy {
 
     @Override
