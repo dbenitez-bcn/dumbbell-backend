@@ -14,14 +14,14 @@ public class FlywayMultiSchemaManager implements FlywayMigrationStrategy {
         DataSource dataSource = flyway.getConfiguration().getDataSource();
         Flyway.configure()
                 .schemas("accounts")
-                .locations("db/accounts")
+                .locations("db/migration/accounts")
                 .dataSource(dataSource)
                 .load()
                 .migrate();
 
         Flyway.configure()
                 .schemas("exercises")
-                .locations("db/exercises")
+                .locations("db/migration/exercises")
                 .dataSource(dataSource)
                 .load()
                 .migrate();
