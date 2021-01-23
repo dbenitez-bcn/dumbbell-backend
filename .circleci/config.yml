@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
-  heroku: circleci/heroku@0.0.10
+  heroku: circleci/heroku@/1.2.4
 jobs:
   setup:
     docker:
@@ -123,6 +123,13 @@ jobs:
       - codecov/upload:
           file: ./build/reports/jacoco/test/jacocoTestReport.xml
 
+  deploy:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+      - heroku/deploy-via-git
+
+
 
 workflows:
   version: 2
@@ -146,7 +153,7 @@ workflows:
             - "unit test"
             - "integration test"
             - "end to end test"
-      - heroku/deploy-via-git:
+      - deploy:
           requires:
             - "unit test"
             - "integration test"
