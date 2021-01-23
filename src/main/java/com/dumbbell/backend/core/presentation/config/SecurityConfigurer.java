@@ -25,7 +25,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenValidationFilter, AuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/login", "/register").permitAll()
+                .antMatchers("/login", "/register", "/hello").permitAll()
                 .antMatchers(HttpMethod.GET, "/exercises", "/exercise/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/exercise").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/exercise/**").hasAuthority("ADMIN")
