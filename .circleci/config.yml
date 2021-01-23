@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
+  heroku: circleci/heroku@0.0.10
 jobs:
   setup:
     docker:
@@ -43,7 +44,7 @@ jobs:
     steps:
       - restore_cache:
           key: code-cache-{{ .Environment.CIRCLE_SHA1 }}
-      - run: ./gradlew build testClasses integrationTestClasses end2endClasses -x test
+      - run: ./gradlew build testClasses integrationTestClasses end2endClasses -x verification
 
   "unit test":
     docker:
@@ -141,6 +142,11 @@ workflows:
           requires:
             - build
       - "codecov upload":
+          requires:
+            - "unit test"
+            - "integration test"
+            - "end to end test"
+      - heroku/deploy-via-git:
           requires:
             - "unit test"
             - "integration test"
