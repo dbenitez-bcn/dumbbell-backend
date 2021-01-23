@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class ExerciseEntity extends DumbbellEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
