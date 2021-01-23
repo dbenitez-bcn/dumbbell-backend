@@ -128,6 +128,9 @@ jobs:
       - image: cimg/base:2020.01
     steps:
       - heroku/deploy-via-git
+        environment:
+          HEROKU_API_KEY: $HEROKU_API_KEY
+          HEROKU_APP_NAME: $HEROKU_APP_NAME
 
 
 
