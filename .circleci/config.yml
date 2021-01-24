@@ -128,7 +128,8 @@ jobs:
       - image: cimg/base:2020.01
     steps:
       - heroku/deploy-via-git:
-          app-name: $HEROKU_APP_NAME
+          api-key: $HEROKU_API_KEY
+          app-name: $HEROKU_APP_NAME_PROD
 
 
 
@@ -155,6 +156,7 @@ workflows:
             - "integration test"
             - "end to end test"
       - deploy:
+          context: dumbbell-backend
           requires:
             - "unit test"
             - "integration test"
