@@ -168,5 +168,6 @@ workflows:
             - "integration test"
             - "end to end test"
       - "deploy to prod":
+          type: approval
           requires:
             - "deploy to stage"
