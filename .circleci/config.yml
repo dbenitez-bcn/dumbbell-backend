@@ -124,9 +124,10 @@ jobs:
           file: ./build/reports/jacoco/test/jacocoTestReport.xml
 
   deploy:
-    docker:
-      - image: cimg/base:2020.01
+    executor: heroku/default
     steps:
+      - checkout
+      - heroku/install
       - heroku/deploy-via-git
 
 
@@ -154,7 +155,6 @@ workflows:
             - "integration test"
             - "end to end test"
       - deploy:
-          context: dumbbell-backend
           requires:
             - "unit test"
             - "integration test"
