@@ -123,7 +123,15 @@ jobs:
       - codecov/upload:
           file: ./build/reports/jacoco/test/jacocoTestReport.xml
 
-  deploy:
+  "deploy to stage":
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: "dumbbell-backend-stage"
+
+  "deploy to prod":
     executor: heroku/default
     steps:
       - checkout
@@ -154,8 +162,11 @@ workflows:
             - "unit test"
             - "integration test"
             - "end to end test"
-      - deploy:
+      - "deploy to stage":
           requires:
             - "unit test"
             - "integration test"
             - "end to end test"
+      - "deploy to prod":
+          requires:
+            - "deploy to stage"
