@@ -157,12 +157,12 @@ workflows:
       - "end to end test":
           requires:
             - build
-      - "codecov upload":
+      - "deploy to stage":
           requires:
             - "unit test"
             - "integration test"
             - "end to end test"
-      - "deploy to stage":
+      - "codecov upload":
           requires:
             - "unit test"
             - "integration test"
