@@ -30,10 +30,21 @@ public class AccountController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
         Account account = accountService.login(request.email, request.password);
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put("role", account.getRole().name());
-        String token = jwtUtils.generateToken(account.getId().toString(), claims);
+        String token = generateToken(account);
 
         return new LoginResponse(token);
+    }
+
+    public LoginResponse adminLogin(LoginRequest request) {
+        Account account = accountService.adminLogin(request.email, request.password);
+        String token = generateToken(account);
+
+        return new LoginResponse(token);
+    }
+
+    private String generateToken(Account account) {
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("role", account.getRole().name());
+        return jwtUtils.generateToken(account.getId().toString(), claims);
     }
 }

@@ -43,4 +43,8 @@ public class AccountService {
         }
         throw new LoginFailed();
     }
+
+    public Account adminLogin(String email, String password) {
+        return null;
+    }
 }
