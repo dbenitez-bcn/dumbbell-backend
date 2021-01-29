@@ -35,7 +35,7 @@ public class AccountController {
         return new LoginResponse(token);
     }
 
-    public LoginResponse adminLogin(LoginRequest request) {
+    public LoginResponse loginInAdminPanel(LoginRequest request) {
         Account account = accountService.operatorLogin(request.email, request.password);
         String token = generateToken(account);
 

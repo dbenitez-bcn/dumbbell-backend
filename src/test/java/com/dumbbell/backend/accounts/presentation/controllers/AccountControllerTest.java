@@ -57,7 +57,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void adminLogin_shouldLoginAnAccount() {
+    void loginInAdminPanel_shouldLoginAnAccount() {
         String aToken = "A_TOKEN";
         Account account = defaultAccount();
         HashMap<String, Object> claims = new HashMap<>();
@@ -65,7 +65,7 @@ class AccountControllerTest {
         when(jwtUtils.generateToken(account.getId().toString(), claims)).thenReturn(aToken);
         when(accountService.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD)).thenReturn(account);
 
-        LoginResponse result = sut.adminLogin(new LoginRequest(ACCOUNT_EMAIL, ACCOUNT_PASSWORD));
+        LoginResponse result = sut.loginInAdminPanel(new LoginRequest(ACCOUNT_EMAIL, ACCOUNT_PASSWORD));
 
         assertThat(result.token).isEqualTo(aToken);
     }
