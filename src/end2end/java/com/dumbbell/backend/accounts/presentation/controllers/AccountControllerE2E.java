@@ -22,7 +22,7 @@ class AccountControllerE2E extends ApplicationTestCase {
     }
 
     @Test
-    void afterUserCreatesANewAccountShouldBeAbleToLogIn() throws Exception {
+    void afterUserCreatesANewAccountShouldBeAbleToLogInButNotToAdminPanel() throws Exception {
         JSONObject body = new JSONObject();
         body.put("email", "testerino@biblioteca.com");
         body.put("password", "password1234");
@@ -38,5 +38,11 @@ class AccountControllerE2E extends ApplicationTestCase {
                 .body(body)
                 .thenAssert()
                 .withCode(200);
+
+        endpointRequest()
+                .post("/admin/login")
+                .body(body)
+                .thenAssert()
+                .withCode(403);
     }
 }
