@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @PostMapping("/admin/login")
-    public LoginResponse loginInAdminPanel(LoginRequest request) {
+    public LoginResponse loginInAdminPanel(@RequestBody LoginRequest request) {
         Account account = accountService.operatorLogin(request.email, request.password);
         String token = generateToken(account);
 
