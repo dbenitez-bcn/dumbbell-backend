@@ -5,6 +5,7 @@ import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
 import com.dumbbell.backend.accounts.domain.repositories.AccountRepository;
 import com.dumbbell.backend.accounts.domain.valueObjects.AccountEmail;
+import com.dumbbell.backend.accounts.domain.valueObjects.HashedPassword;
 import com.dumbbell.backend.accounts.domain.valueObjects.PlainPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,22 +30,29 @@ public class AccountService {
     }
 
     public Account login(String email, String password) {
-        Optional<Account> accountMaybe = accountRepository.getByEmail(new AccountEmail(email));
-        if (accountMaybe.isPresent()) {
-            Account account = accountMaybe.get();
-            boolean passwordMatches = passwordManager
-                    .matches(
-                            new PlainPassword(password),
-                            account.getPassword()
-                    );
-            if (passwordMatches) {
-                return account;
-            }
-        }
-        throw new LoginFailed();
+        Account account = getAccount(email);
+        failIfPasswordDoNotMatch(new PlainPassword(password), account.getPassword());
+        return account;
     }
 
-    public Account adminLogin(String email, String password) {
-        return null;
+    public Account operatorLogin(String email, String password) {
+        Account account = getAccount(email);
+        if (!account.isOperator()) {
+            throw new LoginFailed();
+        }
+        failIfPasswordDoNotMatch(new PlainPassword(password), account.getPassword());
+        return account;
+    }
+
+    private Account getAccount(String email) {
+        return accountRepository
+                .getByEmail(new AccountEmail(email))
+                .orElseThrow(LoginFailed::new);
+    }
+
+    private void failIfPasswordDoNotMatch(PlainPassword plain, HashedPassword hashed) {
+        if (!passwordManager.matches(plain, hashed)) {
+            throw new LoginFailed();
+        }
     }
 }

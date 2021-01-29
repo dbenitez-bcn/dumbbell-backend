@@ -30,8 +30,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 class AccountServiceTest {
 
-    private static final Account ACCOUNT = customAccount(ACCOUNT_EMAIL, ACCOUNT_PASSWORD);
-
     @Mock
     private AccountRepository accountRepository;
     @Mock
@@ -149,6 +147,44 @@ class AccountServiceTest {
         passwordsWillNotMatch();
 
         assertThatThrownBy(() -> sut.login(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
+                .isInstanceOf(LoginFailed.class);
+    }
+
+    @Test
+    void operatorLogin_whenAccountHasOperatorRole_shouldLogin() {
+        willFindAnAccount(OPERATOR_ACCOUNT);
+        passwordMatch();
+
+        Account result = sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD);
+
+        assertThat(result).isEqualTo(OPERATOR_ACCOUNT);
+
+    }
+
+    @Test
+    void operatorLogin_whenAccountDoesNotHaveOperatorRole_shouldLogin() {
+        willFindAnAccount(ACCOUNT);
+        passwordMatch();
+
+        assertThatThrownBy(() -> sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
+                .isInstanceOf(LoginFailed.class);
+
+    }
+
+    @Test
+    void operatorLogin_whenPasswordDoesNotMatch_shouldFailLogin() {
+        willFindAnAccount(OPERATOR_ACCOUNT);
+        passwordsWillNotMatch();
+
+        assertThatThrownBy(() -> sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
+                .isInstanceOf(LoginFailed.class);
+    }
+
+    @Test
+    void operatorLogin_whenUserNotFound_shouldFailLogin() {
+        willFindNoAccount();
+
+        assertThatThrownBy(() -> sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
                 .isInstanceOf(LoginFailed.class);
     }
 

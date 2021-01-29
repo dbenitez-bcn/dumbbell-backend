@@ -30,4 +30,8 @@ public class Account {
         this.password = new HashedPassword(password);
         this.role = AccountRole.valueOf(role);
     }
+
+    public boolean isOperator() {
+        return role == AccountRole.OPERATOR;
+    }
 }

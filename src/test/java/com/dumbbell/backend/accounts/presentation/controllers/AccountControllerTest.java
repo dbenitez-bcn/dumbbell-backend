@@ -63,7 +63,7 @@ class AccountControllerTest {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role", account.getRole().name());
         when(jwtUtils.generateToken(account.getId().toString(), claims)).thenReturn(aToken);
-        when(accountService.adminLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD)).thenReturn(account);
+        when(accountService.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD)).thenReturn(account);
 
         LoginResponse result = sut.adminLogin(new LoginRequest(ACCOUNT_EMAIL, ACCOUNT_PASSWORD));
 

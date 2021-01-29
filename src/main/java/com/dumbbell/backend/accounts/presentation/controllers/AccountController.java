@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     public LoginResponse adminLogin(LoginRequest request) {
-        Account account = accountService.adminLogin(request.email, request.password);
+        Account account = accountService.operatorLogin(request.email, request.password);
         String token = generateToken(account);
 
         return new LoginResponse(token);
