@@ -34,4 +34,12 @@ public class Account {
     public boolean isOperator() {
         return role == AccountRole.OPERATOR;
     }
+
+    public boolean isAdmin() {
+        return role == AccountRole.ADMIN;
+    }
+
+    public boolean hasOperatorPermissions() {
+        return isOperator() || isAdmin();
+    }
 }

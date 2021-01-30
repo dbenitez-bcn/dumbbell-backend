@@ -1,10 +1,7 @@
 package com.dumbbell.backend.accounts.application;
 
 import com.dumbbell.backend.accounts.domain.aggregates.Account;
-import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
-import com.dumbbell.backend.accounts.domain.exceptions.InvalidEmailAddress;
-import com.dumbbell.backend.accounts.domain.exceptions.InvalidPasswordFormat;
-import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
+import com.dumbbell.backend.accounts.domain.exceptions.*;
 import com.dumbbell.backend.accounts.domain.repositories.AccountRepository;
 import com.dumbbell.backend.accounts.domain.valueObjects.AccountEmail;
 import com.dumbbell.backend.accounts.domain.valueObjects.HashedPassword;
@@ -162,12 +159,23 @@ class AccountServiceTest {
     }
 
     @Test
-    void operatorLogin_whenAccountDoesNotHaveOperatorRole_shouldLogin() {
+    void operatorLogin_givenAnAccount_whenHasUserRole_shouldNotLogin() {
         willFindAnAccount(ACCOUNT);
         passwordMatch();
 
         assertThatThrownBy(() -> sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
-                .isInstanceOf(LoginFailed.class);
+                .isInstanceOf(NotEnoughPermissions.class);
+
+    }
+
+    @Test
+    void operatorLogin_givenAnAccount_whenHasAdminRole_shouldLogin() {
+        willFindAnAccount(ADMIN_ACCOUNT);
+        passwordMatch();
+
+        Account result = sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD);
+
+        assertThat(result).isEqualTo(ADMIN_ACCOUNT);
 
     }
 

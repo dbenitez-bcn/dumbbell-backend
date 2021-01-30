@@ -3,6 +3,7 @@ package com.dumbbell.backend.accounts.application;
 import com.dumbbell.backend.accounts.domain.aggregates.Account;
 import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
+import com.dumbbell.backend.accounts.domain.exceptions.NotEnoughPermissions;
 import com.dumbbell.backend.accounts.domain.repositories.AccountRepository;
 import com.dumbbell.backend.accounts.domain.valueObjects.AccountEmail;
 import com.dumbbell.backend.accounts.domain.valueObjects.HashedPassword;
@@ -37,8 +38,8 @@ public class AccountService {
 
     public Account operatorLogin(String email, String password) {
         Account account = getAccount(email);
-        if (!account.isOperator()) {
-            throw new LoginFailed();
+        if (!account.hasOperatorPermissions()) {
+            throw new NotEnoughPermissions();
         }
         failIfPasswordDoNotMatch(new PlainPassword(password), account.getPassword());
         return account;
