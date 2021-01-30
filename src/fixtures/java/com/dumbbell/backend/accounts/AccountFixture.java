@@ -11,6 +11,7 @@ public class AccountFixture {
     public static String ENCODED_PASSWORD = "encodedPassword";
     public static final Account ACCOUNT = customAccount(ACCOUNT_EMAIL, ACCOUNT_PASSWORD, "USER");
     public static final Account OPERATOR_ACCOUNT = customAccount(ACCOUNT_EMAIL, ACCOUNT_PASSWORD, "OPERATOR");
+    public static final Account ADMIN_ACCOUNT = customAccount(ACCOUNT_EMAIL, ACCOUNT_PASSWORD, "ADMIN");
 
     public static Account customAccount(String email, String password, String role) {
         return new Account(UUID.randomUUID(), email, password, role);
