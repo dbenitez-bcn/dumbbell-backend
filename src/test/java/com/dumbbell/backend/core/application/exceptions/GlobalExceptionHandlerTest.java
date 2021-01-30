@@ -85,4 +85,12 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
         assertThat(result.getBody().message).isEqualTo("Exercises not found");
     }
+
+    @Test
+    void notEnoughPermissions_shouldHandleExercisesNotFound() {
+        ResponseEntity<ErrorDetails> result = sut.notEnoughPermissions();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(403);
+        assertThat(result.getBody().message).isEqualTo("You don't have enough permissions");
+    }
 }
