@@ -7,6 +7,7 @@ import com.dumbbell.backend.toggles.presentation.responses.ToggleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class ToggleController {
     private final ToggleService toggleService;
 
    @PostMapping("/toggle")
-    public ResponseEntity<ToggleResponse> create(ToggleCreationRequest request) {
+    public ResponseEntity<ToggleResponse> create(@RequestBody ToggleCreationRequest request) {
         FeatureToggle toggle = toggleService.create(request.name, request.value);
 
         return ResponseEntity.ok(new ToggleResponse(toggle.getName(), toggle.getValue()));
