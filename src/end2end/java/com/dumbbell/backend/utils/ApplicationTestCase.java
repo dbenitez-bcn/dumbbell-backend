@@ -2,6 +2,7 @@ package com.dumbbell.backend.utils;
 
 
 import com.dumbbell.backend.core.utils.JwtUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
@@ -251,6 +253,12 @@ public abstract class ApplicationTestCase {
             } catch (Exception e) {
                 return new JSONObject();
             }
+        }
+
+        public RequestAssertor withMessage(String message) throws JSONException {
+            JSONObject responseBody = this.getResponseBody();
+            assertThat(responseBody.get("message")).isEqualTo(message);
+            return this;
         }
     }
 
