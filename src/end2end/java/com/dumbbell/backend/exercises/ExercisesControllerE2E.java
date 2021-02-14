@@ -1,20 +1,12 @@
 package com.dumbbell.backend.exercises;
 
-import com.dumbbell.backend.core.utils.JwtUtils;
 import com.dumbbell.backend.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExercisesControllerE2E extends ApplicationTestCase {
-
-    @Autowired
-    private JwtUtils jwtUtils;
 
     @Test
     void shouldFailWhenNoExercisesExist() throws Exception {
@@ -92,19 +84,5 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(403);
-    }
-
-    private String createAdminToken() {
-        return createToken("ADMIN");
-    }
-
-    private String createUserToken() {
-        return createToken("USER");
-    }
-
-    private String createToken(String role) {
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
-        return "Bearer " + jwtUtils.generateToken(UUID.randomUUID().toString(), claims);
     }
 }

@@ -1,6 +1,7 @@
 package com.dumbbell.backend.utils;
 
 
+import com.dumbbell.backend.core.utils.JwtUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
@@ -22,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public abstract class ApplicationTestCase {
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Autowired
     private MockMvc mockMvc;
@@ -245,5 +252,19 @@ public abstract class ApplicationTestCase {
                 return new JSONObject();
             }
         }
+    }
+
+    protected String createAdminToken() {
+        return createToken("ADMIN");
+    }
+
+    protected String createUserToken() {
+        return createToken("USER");
+    }
+
+    protected String createToken(String role) {
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+        return "Bearer " + jwtUtils.generateToken(UUID.randomUUID().toString(), claims);
     }
 }
