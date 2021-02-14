@@ -262,6 +262,10 @@ public abstract class ApplicationTestCase {
         return createToken("USER");
     }
 
+    protected String createOperatorToken() {
+        return createToken("OPERATOR");
+    }
+
     protected String createToken(String role) {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role", role);
