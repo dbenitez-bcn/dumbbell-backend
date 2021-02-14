@@ -2,7 +2,9 @@ package com.dumbbell.backend.toggles.domain.aggregates;
 
 import com.dumbbell.backend.toggles.domain.valueObjects.Name;
 import com.dumbbell.backend.toggles.domain.valueObjects.Value;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class FeatureToggle {
     private Name name;
     private Value value;
