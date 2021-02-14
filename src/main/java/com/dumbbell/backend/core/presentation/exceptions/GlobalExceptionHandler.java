@@ -2,6 +2,8 @@ package com.dumbbell.backend.core.presentation.exceptions;
 
 import com.dumbbell.backend.accounts.domain.exceptions.*;
 import com.dumbbell.backend.exercises.domain.exceptions.*;
+import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleAlreadyExist;
+import com.dumbbell.backend.toggles.domain.exceptions.InvalidFeatureToggleName;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,5 +69,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> notEnoughPermissions() {
         ErrorDetails errorDetails = new ErrorDetails("You don't have enough permissions");
         return ResponseEntity.status(403).body(errorDetails);
+    }
+
+    @ExceptionHandler(InvalidFeatureToggleName.class)
+    public ResponseEntity<ErrorDetails> invalidFeatureToggleName() {
+        ErrorDetails errorDetails = new ErrorDetails("Invalid toggle name. Shouldn't have spaces or be empty");
+        return ResponseEntity.status(422).body(errorDetails);
+    }
+
+    @ExceptionHandler(FeatureToggleAlreadyExist.class)
+    public ResponseEntity<ErrorDetails> featureToggleAlreadyExist() {
+        ErrorDetails errorDetails = new ErrorDetails("Toggle already exist");
+        return ResponseEntity.status(422).body(errorDetails);
     }
 }
