@@ -9,6 +9,7 @@ import com.dumbbell.backend.core.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,11 @@ public class AccountController {
         String token = generateToken(account);
 
         return new LoginResponse(token);
+    }
+
+    @DeleteMapping("/auth/logout")
+    public ResponseEntity<Object> logout() {
+        return ResponseEntity.noContent().build();
     }
 
     private String generateToken(Account account) {

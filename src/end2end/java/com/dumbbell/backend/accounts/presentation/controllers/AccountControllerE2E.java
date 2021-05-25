@@ -44,5 +44,10 @@ class AccountControllerE2E extends ApplicationTestCase {
                 .body(body)
                 .thenAssert()
                 .withCode(403);
+
+        endpointRequest()
+                .delete("/auth/logout")
+                .thenAssert()
+                .withCode(204);
     }
 }

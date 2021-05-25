@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 
@@ -68,5 +70,12 @@ class AccountControllerTest {
         LoginResponse result = sut.loginInAdminPanel(new LoginRequest(ACCOUNT_EMAIL, ACCOUNT_PASSWORD));
 
         assertThat(result.token).isEqualTo(aToken);
+    }
+
+    @Test
+    void logout_shouldReturnTheRightStatusCode() {
+        ResponseEntity<Object> result = sut.logout();
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 }
