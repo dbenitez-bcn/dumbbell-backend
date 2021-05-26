@@ -59,6 +59,18 @@ class AccountControllerTest {
     }
 
     @Test
+    void login_shouldReturnARefreshToken() {
+        String aRefreshToken = "REFRESH_TOKEN";
+        Account account = defaultAccount();
+        when(accountService.login(ACCOUNT_EMAIL, ACCOUNT_PASSWORD)).thenReturn(account);
+        when(jwtUtils.generateRefreshToken(account.getId().toString())).thenReturn(aRefreshToken);
+
+        LoginResponse result = sut.login(new LoginRequest(ACCOUNT_EMAIL, ACCOUNT_PASSWORD));
+
+        assertThat(result.refreshToken).isEqualTo(aRefreshToken);
+    }
+
+    @Test
     void loginInAdminPanel_shouldLoginAnAccount() {
         String aToken = "A_TOKEN";
         Account account = defaultAccount();
