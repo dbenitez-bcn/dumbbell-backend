@@ -41,8 +41,9 @@ public class AccountController {
     public LoginResponse loginInAdminPanel(@RequestBody LoginRequest request) {
         Account account = accountService.operatorLogin(request.email, request.password);
         String token = generateToken(account);
+        String refreshToken = jwtUtils.generateRefreshToken(account.getId().toString());
 
-        return new LoginResponse(token, "");
+        return new LoginResponse(token, refreshToken);
     }
 
     @DeleteMapping("/auth/logout")
