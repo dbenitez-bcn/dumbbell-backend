@@ -22,6 +22,13 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
+    public String generateRefreshToken(String signingKey) {
+        int sevenDaysInMillis = 1000 * 60 * 60 * 24 * 7;
+        return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + sevenDaysInMillis))
+                .signWith(SignatureAlgorithm.HS256, signingKey).compact();
+    }
+
     public Boolean validateToken(String token) {
         try {
             return (isTokenSigned(token) && !isTokenExpired(token));
