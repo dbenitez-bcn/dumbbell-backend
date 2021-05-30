@@ -44,7 +44,10 @@ class AccountControllerE2E extends ApplicationTestCase {
                 .body(body)
                 .thenAssert()
                 .withCode(403);
+    }
 
+    @Test
+    void aUserCanLogout() throws Exception {
         endpointRequest()
                 .delete("/auth/logout")
                 .thenAssert()
