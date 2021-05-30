@@ -23,11 +23,11 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public String generateRefreshToken(String signingKey) {
+    public String generateRefreshToken(String subject) {
         int sevenDaysInMillis = 1000 * 60 * 60 * 24 * 7;
-        return Jwts.builder().setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + sevenDaysInMillis))
-                .signWith(SignatureAlgorithm.HS256, signingKey).compact();
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     public Boolean validateToken(String token) {
