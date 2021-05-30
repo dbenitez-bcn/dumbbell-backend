@@ -28,13 +28,9 @@ public class PostgresAccountRepository implements AccountRepository {
 
     @Override
     public Optional<Account> getByEmail(AccountEmail email) {
-        Optional<AccountEntity> accountMaybe = accountDataSource.findByEmail(email.getValue());
-        return accountMaybe.map(accountEntity -> new Account(
-                accountMaybe.get().getId(),
-                accountMaybe.get().getEmail(),
-                accountMaybe.get().getPassword(),
-                accountMaybe.get().getRole()
-        ));
+        return accountDataSource
+                .findByEmail(email.getValue())
+                .map(this::mapToAccount);
     }
 
     @Override
