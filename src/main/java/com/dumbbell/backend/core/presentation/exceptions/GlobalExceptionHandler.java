@@ -82,4 +82,10 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails("Toggle already exist");
         return ResponseEntity.status(422).body(errorDetails);
     }
+
+    @ExceptionHandler(InvalidToken.class)
+    public ResponseEntity<ErrorDetails> invalidToken() {
+        ErrorDetails errorDetails = new ErrorDetails("Invalid token");
+        return ResponseEntity.status(401).body(errorDetails);
+    }
 }

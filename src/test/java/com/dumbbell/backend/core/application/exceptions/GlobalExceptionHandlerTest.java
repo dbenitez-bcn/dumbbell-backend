@@ -93,4 +93,12 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(403);
         assertThat(result.getBody().message).isEqualTo("You don't have enough permissions");
     }
+
+    @Test
+    void invalidToken_shouldInvalidToken() {
+        ResponseEntity<ErrorDetails> result = sut.invalidToken();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(401);
+        assertThat(result.getBody().message).isEqualTo("Invalid token");
+    }
 }
