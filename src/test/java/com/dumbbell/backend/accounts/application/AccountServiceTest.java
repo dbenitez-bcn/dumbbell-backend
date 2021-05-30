@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.dumbbell.backend.accounts.AccountFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -194,6 +195,23 @@ class AccountServiceTest {
 
         assertThatThrownBy(() -> sut.operatorLogin(ACCOUNT_EMAIL, ACCOUNT_PASSWORD))
                 .isInstanceOf(LoginFailed.class);
+    }
+
+    @Test
+    void findById_whenUserIsFound_shouldReturnAnAccount() {
+        when(accountRepository.getById(ACCOUNT.getId())).thenReturn(Optional.of(ACCOUNT));
+
+        Account got = sut.findById(ACCOUNT.getId().toString());
+
+        assertThat(got).isEqualTo(ACCOUNT);
+    }
+
+    @Test
+    void findById_whenUserNotFound_shouldFail() {
+        when(accountRepository.getById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> sut.findById(UUID.randomUUID().toString()))
+                .isInstanceOf(AccountNotFound.class);
     }
 
     private void willFindAnAccount(Account account) {

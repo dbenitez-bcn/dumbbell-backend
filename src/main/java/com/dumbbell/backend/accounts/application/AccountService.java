@@ -1,6 +1,7 @@
 package com.dumbbell.backend.accounts.application;
 
 import com.dumbbell.backend.accounts.domain.aggregates.Account;
+import com.dumbbell.backend.accounts.domain.exceptions.AccountNotFound;
 import com.dumbbell.backend.accounts.domain.exceptions.EmailAlreadyInUse;
 import com.dumbbell.backend.accounts.domain.exceptions.LoginFailed;
 import com.dumbbell.backend.accounts.domain.exceptions.NotEnoughPermissions;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,12 @@ public class AccountService {
         }
         failIfPasswordDoNotMatch(new PlainPassword(password), account.getPassword());
         return account;
+    }
+
+    public Account findById(String id) {
+        return accountRepository
+                .getById(UUID.fromString(id))
+                .orElseThrow(AccountNotFound::new);
     }
 
     private Account getAccount(String email) {
