@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,5 +35,21 @@ public class PostgresAccountRepository implements AccountRepository {
                 accountMaybe.get().getPassword(),
                 accountMaybe.get().getRole()
         ));
+    }
+
+    @Override
+    public Optional<Account> getById(UUID id) {
+        return accountDataSource
+                .findById(id)
+                .map(this::mapToAccount);
+    }
+
+    private Account mapToAccount(AccountEntity entity) {
+        return new Account(
+                entity.getId(),
+                entity.getEmail(),
+                entity.getPassword(),
+                entity.getRole()
+        );
     }
 }

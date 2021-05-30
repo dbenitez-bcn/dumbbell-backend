@@ -11,16 +11,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.dumbbell.backend.accounts.AccountEntityFixture.defaultAccountEntity;
 import static com.dumbbell.backend.accounts.AccountFixture.ACCOUNT_EMAIL;
 import static com.dumbbell.backend.accounts.AccountFixture.defaultAccount;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class PostgresAccountRepositoryTest {
+
+    private static final AccountEntity ACCOUNT_ENTITY = defaultAccountEntity();
 
     @Mock
     private AccountDataSource accountDataSource;
@@ -52,15 +56,14 @@ class PostgresAccountRepositoryTest {
 
     @Test
     void getByEmail_whenUserIsFound_shouldReturnAnAccount() {
-        AccountEntity accountEntity = defaultAccountEntity();
-        when(accountDataSource.findByEmail(ACCOUNT_EMAIL)).thenReturn(Optional.of(accountEntity));
+        when(accountDataSource.findByEmail(ACCOUNT_EMAIL)).thenReturn(Optional.of(ACCOUNT_ENTITY));
 
         Account result = sut.getByEmail(new AccountEmail(ACCOUNT_EMAIL)).get();
 
-        assertThat(result.getId()).isEqualTo(accountEntity.getId());
-        assertThat(result.getEmail().getValue()).isEqualTo(accountEntity.getEmail());
-        assertThat(result.getPassword().getValue()).isEqualTo(accountEntity.getPassword());
-        assertThat(result.getRole().name()).isEqualTo(accountEntity.getRole());
+        assertThat(result.getId()).isEqualTo(ACCOUNT_ENTITY.getId());
+        assertThat(result.getEmail().getValue()).isEqualTo(ACCOUNT_ENTITY.getEmail());
+        assertThat(result.getPassword().getValue()).isEqualTo(ACCOUNT_ENTITY.getPassword());
+        assertThat(result.getRole().name()).isEqualTo(ACCOUNT_ENTITY.getRole());
     }
 
     @Test
@@ -70,5 +73,26 @@ class PostgresAccountRepositoryTest {
         Optional<Account> result = sut.getByEmail(new AccountEmail(ACCOUNT_EMAIL));
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void getById_whenUserIsFound_shouldReturnAnAccount() {
+        when(accountDataSource.findById(ACCOUNT_ENTITY.getId())).thenReturn(Optional.of(ACCOUNT_ENTITY));
+
+        Account got = sut.getById(ACCOUNT_ENTITY.getId()).get();
+
+        assertThat(got.getId()).isEqualTo(ACCOUNT_ENTITY.getId());
+        assertThat(got.getEmail().getValue()).isEqualTo(ACCOUNT_ENTITY.getEmail());
+        assertThat(got.getPassword().getValue()).isEqualTo(ACCOUNT_ENTITY.getPassword());
+        assertThat(got.getRole().name()).isEqualTo(ACCOUNT_ENTITY.getRole());
+    }
+
+    @Test
+    void getById_whenUserIsNotFound_shouldReturnNothing() {
+        when(accountDataSource.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        Optional<Account> got = sut.getById(UUID.randomUUID());
+
+        assertThat(got).isEmpty();
     }
 }
