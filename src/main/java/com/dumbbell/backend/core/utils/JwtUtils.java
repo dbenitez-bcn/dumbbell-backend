@@ -17,7 +17,7 @@ public class JwtUtils {
     private String SECRET_KEY;
 
     public String generateToken(String subject, Map<String, Object> claims) {
-        int fifteenMinutesInMillis = 1000 * 15;
+        int fifteenMinutesInMillis = 1000 * 60 * 15;
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + fifteenMinutesInMillis))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
