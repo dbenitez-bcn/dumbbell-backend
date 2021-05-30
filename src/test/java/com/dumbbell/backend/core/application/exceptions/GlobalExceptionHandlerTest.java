@@ -101,4 +101,12 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(401);
         assertThat(result.getBody().message).isEqualTo("Invalid token");
     }
+
+    @Test
+    void accountNotFound_shouldAccountNotFound() {
+        ResponseEntity<ErrorDetails> result = sut.accountNotFound();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+        assertThat(result.getBody().message).isEqualTo("User not found");
+    }
 }

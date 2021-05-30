@@ -88,4 +88,10 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails("Invalid token");
         return ResponseEntity.status(401).body(errorDetails);
     }
+
+    @ExceptionHandler(AccountNotFound.class)
+    public ResponseEntity<ErrorDetails> accountNotFound() {
+        ErrorDetails errorDetails = new ErrorDetails("User not found");
+        return ResponseEntity.status(404).body(errorDetails);
+    }
 }
