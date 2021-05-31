@@ -2,7 +2,9 @@ package com.dumbbell.backend.accounts.presentation.controllers;
 
 import com.dumbbell.backend.accounts.application.AccountService;
 import com.dumbbell.backend.accounts.domain.aggregates.Account;
+import com.dumbbell.backend.accounts.domain.exceptions.InvalidToken;
 import com.dumbbell.backend.accounts.presentation.request.LoginRequest;
+import com.dumbbell.backend.accounts.presentation.request.RefreshTokenRequest;
 import com.dumbbell.backend.accounts.presentation.request.RegisterRequest;
 import com.dumbbell.backend.accounts.presentation.responses.LoginResponse;
 import com.dumbbell.backend.core.utils.JwtUtils;
@@ -49,6 +51,20 @@ public class AccountController {
     @DeleteMapping("/auth/logout")
     public ResponseEntity<Object> logout() {
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/auth/refresh")
+    public LoginResponse refresh(@RequestBody RefreshTokenRequest request) {
+        if (!jwtUtils.validateToken(request.refreshToken)) {
+            throw new InvalidToken();
+        }
+        String id = jwtUtils.extractSubject(request.refreshToken);
+        Account account = accountService.findById(id);
+
+        return new LoginResponse(
+                generateToken(account),
+                jwtUtils.generateRefreshToken(account.getId().toString())
+        );
     }
 
     private String generateToken(Account account) {

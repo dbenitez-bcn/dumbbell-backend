@@ -8,7 +8,7 @@ class AccountControllerE2E extends ApplicationTestCase {
     @Test
     void whenUserIntroducesWrongCredentialsShouldFail() throws Exception {
         JSONObject body = new JSONObject();
-        body.put("email", "fake@biblioteca.com");
+        body.put("email", "fake@dumbbell.com");
         body.put("password", "wrongPassword1234");
         JSONObject expectedResponse = new JSONObject();
         expectedResponse.put("message", "Invalid email or password");
@@ -24,7 +24,7 @@ class AccountControllerE2E extends ApplicationTestCase {
     @Test
     void afterUserCreatesANewAccountShouldBeAbleToLogInButNotToAdminPanel() throws Exception {
         JSONObject body = new JSONObject();
-        body.put("email", "testerino@biblioteca.com");
+        body.put("email", "testerino@dumbbell.com");
         body.put("password", "password1234");
 
         endpointRequest()
@@ -52,5 +52,43 @@ class AccountControllerE2E extends ApplicationTestCase {
                 .delete("/auth/logout")
                 .thenAssert()
                 .withCode(204);
+    }
+
+    @Test
+    void whenAUserLogInReceivesARefreshTokenAndThenUseItToGetANewToken() throws Exception {
+        JSONObject body = new JSONObject();
+        body.put("email", "refresh@dumbbell.com");
+        body.put("password", "password1234");
+
+        endpointRequest()
+                .post("/register")
+                .body(body)
+                .thenAssert()
+                .withCode(201);
+
+        JSONObject loginResponse = endpointRequest()
+                .post("/login")
+                .body(body)
+                .thenAssert()
+                .getResponseBody();
+
+        JSONObject refreshBody = new JSONObject();
+        refreshBody.put("refreshToken", loginResponse.get("refreshToken"));
+        endpointRequest()
+                .post("/auth/refresh")
+                .body(refreshBody)
+                .thenAssert()
+                .withCode(200);
+    }
+
+    @Test
+    void shouldNotGetANewTokenForAnInvalidRefreshToken() throws Exception {
+        JSONObject body = new JSONObject();
+        body.put("refreshToken", "InvalidToken");
+        endpointRequest()
+                .post("/auth/refresh")
+                .body(body)
+                .thenAssert()
+                .withCode(401);
     }
 }

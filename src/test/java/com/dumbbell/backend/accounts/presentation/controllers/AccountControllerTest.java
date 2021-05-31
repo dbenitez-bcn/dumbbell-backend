@@ -2,7 +2,9 @@ package com.dumbbell.backend.accounts.presentation.controllers;
 
 import com.dumbbell.backend.accounts.application.AccountService;
 import com.dumbbell.backend.accounts.domain.aggregates.Account;
+import com.dumbbell.backend.accounts.domain.exceptions.InvalidToken;
 import com.dumbbell.backend.accounts.presentation.request.LoginRequest;
+import com.dumbbell.backend.accounts.presentation.request.RefreshTokenRequest;
 import com.dumbbell.backend.accounts.presentation.request.RegisterRequest;
 import com.dumbbell.backend.accounts.presentation.responses.LoginResponse;
 import com.dumbbell.backend.core.utils.JwtUtils;
@@ -14,11 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static com.dumbbell.backend.accounts.AccountFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class AccountControllerTest {
@@ -101,5 +104,51 @@ class AccountControllerTest {
         ResponseEntity<Object> result = sut.logout();
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void refresh_whenRefreshTokenIsValid_shouldReturnANewToken() {
+        String uuid = UUID.randomUUID().toString();
+        String refreshToken = "REFRESH_TOKEN";
+        String newToken = "NEW_TOKEN";
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("role", ACCOUNT.getRole().name());
+        when(accountService.findById(uuid)).thenReturn(ACCOUNT);
+        when(jwtUtils.extractSubject(refreshToken)).thenReturn(uuid);
+        when(jwtUtils.generateToken(ACCOUNT.getId().toString(), claims)).thenReturn(newToken);
+        when(jwtUtils.validateToken(refreshToken)).thenReturn(true);
+
+        LoginResponse got = sut.refresh(new RefreshTokenRequest(refreshToken));
+
+        assertThat(got.token).isEqualTo(newToken);
+    }
+
+    @Test
+    void refresh_whenRefreshTokenIsValid_shouldReturnANewRefreshToken() {
+        String uuid = UUID.randomUUID().toString();
+        String refreshToken = "REFRESH_TOKEN";
+        String newRefreshToken = "NEW_REFRESH_TOKEN";
+        when(accountService.findById(uuid)).thenReturn(ACCOUNT);
+        when(jwtUtils.extractSubject(refreshToken)).thenReturn(uuid);
+        when(jwtUtils.generateRefreshToken(ACCOUNT.getId().toString())).thenReturn(newRefreshToken);
+        when(jwtUtils.validateToken(refreshToken)).thenReturn(true);
+
+        LoginResponse got = sut.refresh(new RefreshTokenRequest(refreshToken));
+
+        assertThat(got.refreshToken).isEqualTo(newRefreshToken);
+    }
+
+    @Test
+    void refresh_whenRefreshTokenIsNotValid_shouldDoNothing() {
+        String refreshToken = "REFRESH_TOKEN";
+        when(jwtUtils.validateToken(anyString())).thenReturn(false);
+
+        assertThatThrownBy(() -> sut.refresh(new RefreshTokenRequest(refreshToken)))
+                .isInstanceOf(InvalidToken.class);
+
+        verifyZeroInteractions(accountService);
+        verify(jwtUtils, never()).extractSubject(anyString());
+        verify(jwtUtils, never()).generateRefreshToken(anyString());
+        verify(jwtUtils, never()).generateToken(anyString(), anyMap());
     }
 }
