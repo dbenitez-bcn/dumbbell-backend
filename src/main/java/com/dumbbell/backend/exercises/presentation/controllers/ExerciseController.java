@@ -35,7 +35,7 @@ public class ExerciseController {
         return ResponseEntity.ok(mapExerciseToResponse(exercise));
     }
 
-    @GetMapping("/exercises")
+    @GetMapping("/exercise")
     public ResponseEntity<List<ExerciseResponse>> getAll() {
         return ResponseEntity.ok(
                 exerciseService

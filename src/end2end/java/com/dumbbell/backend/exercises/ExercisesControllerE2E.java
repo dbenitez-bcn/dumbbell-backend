@@ -11,7 +11,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     @Test
     void shouldFailWhenNoExercisesExist() throws Exception {
         Object result = endpointRequest()
-                .get("/exercises")
+                .get("/exercise")
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(404)
