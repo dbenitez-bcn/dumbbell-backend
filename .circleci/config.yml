@@ -162,11 +162,19 @@ workflows:
             - "unit test"
             - "integration test"
             - "end to end test"
+          filters:
+            branches:
+              only:
+                - main
       - "codecov upload":
           requires:
             - "unit test"
             - "integration test"
             - "end to end test"
+          filters:
+            branches:
+              only:
+                - main
       - "deploy to prod":
           requires:
             - "deploy to stage"
