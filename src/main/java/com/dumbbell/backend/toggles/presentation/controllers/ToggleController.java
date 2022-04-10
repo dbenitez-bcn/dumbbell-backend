@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @RestController
 public class ToggleController {
@@ -19,6 +22,19 @@ public class ToggleController {
     public ResponseEntity<ToggleResponse> create(@RequestBody ToggleCreationRequest request) {
         FeatureToggle toggle = toggleService.create(request.name, request.value);
 
-        return ResponseEntity.ok(new ToggleResponse(toggle.getName(), toggle.getValue()));
+        return ResponseEntity.ok(toResponse(toggle));
+    }
+
+    public ResponseEntity<List<ToggleResponse>> getAll() {
+        List<ToggleResponse> all = toggleService
+                .getAll()
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(all);
+    }
+
+    private ToggleResponse toResponse(FeatureToggle toggle) {
+        return new ToggleResponse(toggle.getName(), toggle.getValue());
     }
 }
