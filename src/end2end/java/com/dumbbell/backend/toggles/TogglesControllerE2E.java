@@ -4,6 +4,8 @@ import com.dumbbell.backend.utils.ApplicationTestCase;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class TogglesControllerE2E extends ApplicationTestCase {
 
     @Test
@@ -13,6 +15,19 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .authorization(createOperatorToken())
                 .thenAssert()
                 .withCode(403);
+    }
+
+    @Test
+    void shouldFailWhenNoTogglesExist() throws Exception {
+        Object result = endpointRequest()
+                .get("/toggle")
+                .authorization(createAdminToken())
+                .thenAssert()
+                .withCode(404)
+                .getResponseBody()
+                .get("message");
+
+        assertThat(result).isEqualTo("Toggles not found");
     }
 
     @Test
@@ -48,5 +63,12 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .thenAssert()
                 .withCode(422)
                 .withMessage("Toggle already exist");
+
+        endpointRequest()
+                .get("/toggle")
+                .authorization(token)
+                .thenAssert()
+                .withCode(200);
+
     }
 }
