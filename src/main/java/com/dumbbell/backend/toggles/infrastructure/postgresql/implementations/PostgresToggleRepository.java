@@ -7,7 +7,9 @@ import com.dumbbell.backend.toggles.infrastructure.postgresql.entities.FeatureTo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,6 +27,15 @@ public class PostgresToggleRepository implements ToggleRepository {
         return dataSource
                 .findById(name.getValue())
                 .map(this::mapFromEntity);
+    }
+
+    @Override
+    public List<FeatureToggle> findAll() {
+        return dataSource
+                .findAll()
+                .stream()
+                .map(this::mapFromEntity)
+                .collect(Collectors.toList());
     }
 
     private FeatureToggle mapFromEntity(FeatureToggleEntity entity) {

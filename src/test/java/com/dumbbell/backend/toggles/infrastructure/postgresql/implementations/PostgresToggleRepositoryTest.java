@@ -2,7 +2,6 @@ package com.dumbbell.backend.toggles.infrastructure.postgresql.implementations;
 
 import com.dumbbell.backend.toggles.domain.aggregates.FeatureToggle;
 import com.dumbbell.backend.toggles.domain.valueObjects.Name;
-import com.dumbbell.backend.toggles.infrastructure.postgresql.entities.FeatureToggleEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.dumbbell.backend.toggles.FeatureToggleFixture.*;
-import static com.dumbbell.backend.toggles.FeatureToggleFixture.testToggle;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -60,7 +57,7 @@ class PostgresToggleRepositoryTest {
 
     @Test
     void findAll_shouldReturnAllToggles() {
-        when(dataSource.findAll()).thenReturn(asList(testToggleEntity()));
+        when(dataSource.findAll()).thenReturn(List.of(testToggleEntity()));
 
         List<FeatureToggle> got = sut.findAll();
 
