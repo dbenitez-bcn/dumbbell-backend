@@ -3,6 +3,7 @@ package com.dumbbell.backend.core.presentation.exceptions;
 import com.dumbbell.backend.accounts.domain.exceptions.*;
 import com.dumbbell.backend.exercises.domain.exceptions.*;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleAlreadyExist;
+import com.dumbbell.backend.toggles.domain.exceptions.FeatureTogglesNotFound;
 import com.dumbbell.backend.toggles.domain.exceptions.InvalidFeatureToggleName;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -92,6 +93,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccountNotFound.class)
     public ResponseEntity<ErrorDetails> accountNotFound() {
         ErrorDetails errorDetails = new ErrorDetails("User not found");
+        return ResponseEntity.status(404).body(errorDetails);
+    }
+
+    @ExceptionHandler(FeatureTogglesNotFound.class)
+    public ResponseEntity<ErrorDetails> featureTogglesNotFound() {
+        ErrorDetails errorDetails = new ErrorDetails("Toggles not found");
         return ResponseEntity.status(404).body(errorDetails);
     }
 }
