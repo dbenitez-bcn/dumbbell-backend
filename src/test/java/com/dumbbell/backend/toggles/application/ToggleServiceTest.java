@@ -2,6 +2,7 @@ package com.dumbbell.backend.toggles.application;
 
 import com.dumbbell.backend.toggles.domain.aggregates.FeatureToggle;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleAlreadyExist;
+import com.dumbbell.backend.toggles.domain.exceptions.FeatureTogglesNotFound;
 import com.dumbbell.backend.toggles.domain.exceptions.InvalidFeatureToggleName;
 import com.dumbbell.backend.toggles.domain.repositories.ToggleRepository;
 import com.dumbbell.backend.toggles.domain.valueObjects.Name;
@@ -10,11 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.dumbbell.backend.toggles.FeatureToggleFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.util.Lists.emptyList;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -65,5 +68,21 @@ class ToggleServiceTest {
                 .isInstanceOf(FeatureToggleAlreadyExist.class);
 
         verify(toggleRepository, times(0)).upsert(any());
+    }
+
+    @Test
+    void findAll_shouldReturnTheList() {
+        when(toggleRepository.findAll()).thenReturn(List.of(testToggle()));
+
+        List<FeatureToggle> got = sut.getAll();
+
+        assertThat(got).containsOnly(testToggle());
+    }
+
+    @Test
+    void findAll_whenNoToggles_shouldFail() {
+        when(toggleRepository.findAll()).thenReturn(emptyList());
+
+        assertThatThrownBy(() -> sut.getAll()).isInstanceOf(FeatureTogglesNotFound.class);
     }
 }
