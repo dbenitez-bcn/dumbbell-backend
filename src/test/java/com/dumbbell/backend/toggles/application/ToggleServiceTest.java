@@ -2,6 +2,7 @@ package com.dumbbell.backend.toggles.application;
 
 import com.dumbbell.backend.toggles.domain.aggregates.FeatureToggle;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleAlreadyExist;
+import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleNotFound;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureTogglesNotFound;
 import com.dumbbell.backend.toggles.domain.exceptions.InvalidFeatureToggleName;
 import com.dumbbell.backend.toggles.domain.repositories.ToggleRepository;
@@ -84,5 +85,22 @@ class ToggleServiceTest {
         when(toggleRepository.findAll()).thenReturn(emptyList());
 
         assertThatThrownBy(() -> sut.getAll()).isInstanceOf(FeatureTogglesNotFound.class);
+    }
+
+    @Test
+    void findByName_whenToggleExist_shouldReturnTheToggle() {
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.of(testToggle()));
+
+        FeatureToggle got = sut.findByName(testToggle().getName());
+
+        assertThat(got).isEqualTo(testToggle());
+    }
+
+    @Test
+    void findByName_whenToggleNotExist_shouldFail() {
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> sut.findByName(TOGGLE_NAME))
+                .isInstanceOf(FeatureToggleNotFound.class);
     }
 }

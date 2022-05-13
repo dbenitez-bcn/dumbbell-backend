@@ -2,6 +2,7 @@ package com.dumbbell.backend.toggles.application;
 
 import com.dumbbell.backend.toggles.domain.aggregates.FeatureToggle;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleAlreadyExist;
+import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleNotFound;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureTogglesNotFound;
 import com.dumbbell.backend.toggles.domain.repositories.ToggleRepository;
 import com.dumbbell.backend.toggles.domain.valueObjects.Name;
@@ -29,5 +30,11 @@ public class ToggleService {
         List<FeatureToggle> list = repository.findAll();
         if (list.isEmpty()) throw new FeatureTogglesNotFound();
         return list;
+    }
+
+    public FeatureToggle findByName(String name) {
+        return repository
+                .findByName(new Name(name))
+                .orElseThrow(FeatureToggleNotFound::new);
     }
 }
