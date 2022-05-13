@@ -18,6 +18,33 @@ public class TogglesControllerE2E extends ApplicationTestCase {
     }
 
     @Test
+    void givenAUser_whenTheyCheckAToggleValue_thenTheyShouldReceiveIt() throws Exception {
+        endpointRequest()
+                .get("/toggle/TEST_TOGGLE")
+                .authorization(createUserToken())
+                .thenAssert()
+                .withCode(200);
+    }
+
+    @Test
+    void givenAUser_whenCheckAllToggles_thenTheyGetAForbiddenError() throws Exception {
+        endpointRequest()
+                .get("/toggle")
+                .authorization(createUserToken())
+                .thenAssert()
+                .withCode(403);
+    }
+
+    @Test
+    void givenAnOperator_whenCheckAllToggles_thenTheyShouldSeeAllToggles() throws Exception {
+        endpointRequest()
+                .get("/toggle")
+                .authorization(createOperatorToken())
+                .thenAssert()
+                .withCode(200);
+    }
+
+    @Test
     void shouldFailWhenNoTogglesExist() throws Exception {
         Object result = endpointRequest()
                 .get("/toggle")
@@ -32,10 +59,18 @@ public class TogglesControllerE2E extends ApplicationTestCase {
 
     @Test
     void toggleCreationFlowTest() throws Exception {
+        String toggleName = "TOGGLE_NAME";
         String token = createAdminToken();
         JSONObject badBody = new JSONObject();
         badBody.put("name", "bad name");
         badBody.put("value", true);
+
+        endpointRequest()
+                .get("/toggle/" + toggleName)
+                .authorization(token)
+                .thenAssert()
+                .withCode(200)
+                .withResponse("false");
 
         endpointRequest()
                 .post("/toggle")
@@ -46,7 +81,7 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .withMessage("Invalid toggle name. Shouldn't have spaces or be empty");
 
         JSONObject rightBody = new JSONObject();
-        rightBody.put("name", "TOGGLE_NAME");
+        rightBody.put("name", toggleName);
         rightBody.put("value", true);
 
         endpointRequest()
@@ -55,6 +90,13 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .body(rightBody)
                 .thenAssert()
                 .withCode(200);
+
+        endpointRequest()
+                .get("/toggle/" + toggleName)
+                .authorization(token)
+                .thenAssert()
+                .withCode(200)
+                .withResponse("true");
 
         endpointRequest()
                 .post("/toggle")

@@ -30,7 +30,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/exercise").hasAnyAuthority("ADMIN", "OPERATOR")
                 .antMatchers(HttpMethod.PUT, "/exercise/**").hasAnyAuthority("ADMIN", "OPERATOR")
                 .antMatchers(HttpMethod.DELETE, "/exercise/**").hasAnyAuthority("ADMIN", "OPERATOR")
-                .antMatchers("/toggle").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST,"/toggle").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET,"/toggle").hasAnyAuthority("ADMIN", "OPERATOR")
+                .antMatchers(HttpMethod.GET,"/toggle/*").authenticated()
                 .antMatchers("/").authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

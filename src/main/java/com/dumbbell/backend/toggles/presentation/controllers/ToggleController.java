@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ToggleController {
     private final ToggleService toggleService;
 
-   @PostMapping()
+    @PostMapping()
     public ResponseEntity<ToggleResponse> create(@RequestBody ToggleCreationRequest request) {
         FeatureToggle toggle = toggleService.create(request.name, request.value);
 
@@ -34,7 +34,17 @@ public class ToggleController {
         return ResponseEntity.ok(all);
     }
 
+    @GetMapping("/{name}")
+    public ResponseEntity<Boolean> getToggleValue(@PathVariable("name") String name) {
+        try {
+            return ResponseEntity.ok(toggleService.findByName(name).getValue());
+        } catch (Exception e) {
+            return ResponseEntity.ok(false);
+        }
+    }
+
     private ToggleResponse toResponse(FeatureToggle toggle) {
         return new ToggleResponse(toggle.getName(), toggle.getValue());
     }
+
 }
