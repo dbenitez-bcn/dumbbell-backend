@@ -14,6 +14,7 @@ import static com.dumbbell.backend.toggles.FeatureToggleFixture.*;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -71,5 +72,12 @@ class PostgresToggleRepositoryTest {
         List<FeatureToggle> got = sut.findAll();
 
         assertThat(got).isEmpty();
+    }
+
+    @Test
+    void delete_shouldDeleteTheToggleForTheGivenName() {
+        sut.delete(new Name(TOGGLE_NAME));
+
+        verify(dataSource).deleteById(TOGGLE_NAME);
     }
 }

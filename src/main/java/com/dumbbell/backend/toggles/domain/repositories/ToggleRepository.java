@@ -10,4 +10,5 @@ public interface ToggleRepository {
     FeatureToggle upsert(FeatureToggle toggle);
     Optional<FeatureToggle> findByName(Name name);
     List<FeatureToggle> findAll();
+    void delete(Name name);
 }

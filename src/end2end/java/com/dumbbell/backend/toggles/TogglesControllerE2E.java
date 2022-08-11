@@ -37,6 +37,19 @@ public class TogglesControllerE2E extends ApplicationTestCase {
 
     @Test
     void givenAnOperator_whenCheckAllToggles_thenTheyShouldSeeAllToggles() throws Exception {
+        String toggleName = "TOGGLE_NAME";
+        String token = createAdminToken();
+        JSONObject rightBody = new JSONObject();
+        rightBody.put("name", toggleName);
+        rightBody.put("value", true);
+
+        endpointRequest()
+                .post("/toggle")
+                .authorization(token)
+                .body(rightBody)
+                .thenAssert()
+                .withCode(200);
+
         endpointRequest()
                 .get("/toggle")
                 .authorization(createOperatorToken())
@@ -111,6 +124,22 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .authorization(token)
                 .thenAssert()
                 .withCode(200);
+        /*
+        JSONObject newToggleValue = new JSONObject();
+        rightBody.put("value", false);
+        endpointRequest()
+                .put("/toggle/" + toggleName)
+                .body(newToggleValue)
+                .authorization(token)
+                .thenAssert()
+                .withCode(204)
+                .withResponse("false");
+        */
+        endpointRequest()
+                .delete("/toggle/" + toggleName)
+                .authorization(token)
+                .thenAssert()
+                .withCode(204);
 
     }
 }

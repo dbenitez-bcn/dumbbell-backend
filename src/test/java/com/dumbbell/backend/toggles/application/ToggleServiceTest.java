@@ -103,4 +103,22 @@ class ToggleServiceTest {
         assertThatThrownBy(() -> sut.findByName(TOGGLE_NAME))
                 .isInstanceOf(FeatureToggleNotFound.class);
     }
+
+
+    @Test
+    void delete_whenToggleNotExist_shouldFail() {
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> sut.delete(TOGGLE_NAME))
+                .isInstanceOf(FeatureToggleNotFound.class);
+    }
+
+    @Test
+    void delete_whenToggleExist_shouldDeleteIt() {
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.of(testToggle()));
+
+        sut.delete(TOGGLE_NAME);
+
+        verify(toggleRepository).delete(new Name(TOGGLE_NAME));
+    }
 }

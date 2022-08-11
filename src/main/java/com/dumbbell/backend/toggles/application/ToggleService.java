@@ -37,4 +37,9 @@ public class ToggleService {
                 .findByName(new Name(name))
                 .orElseThrow(FeatureToggleNotFound::new);
     }
+
+    public void delete(String name) {
+        findByName(name);
+        repository.delete(new Name(name));
+    }
 }

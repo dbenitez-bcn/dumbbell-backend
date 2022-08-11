@@ -17,6 +17,7 @@ import java.util.List;
 import static com.dumbbell.backend.toggles.FeatureToggleFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -68,5 +69,21 @@ class ToggleControllerTest {
         ResponseEntity<Boolean> got = sut.getToggleValue(TOGGLE_NAME);
 
         assertThat(got.getBody()).isFalse();
+    }
+
+    @Test
+    void delete_whenToggleExist_shouldDeleteTheToggle() {
+        sut.deleteToggle(TOGGLE_NAME);
+
+        verify(toggleService).delete(TOGGLE_NAME);
+    }
+
+    @Test
+    void delete_whenToggleNotExist_shouldDeleteTheToggle() {
+        when(toggleService.findByName(anyString())).thenThrow(FeatureToggleNotFound.class);
+
+        sut.deleteToggle(TOGGLE_NAME);
+
+        verify(toggleService).delete(TOGGLE_NAME);
     }
 }

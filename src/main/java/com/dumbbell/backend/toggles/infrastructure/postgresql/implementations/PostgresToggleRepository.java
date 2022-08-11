@@ -38,6 +38,11 @@ public class PostgresToggleRepository implements ToggleRepository {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void delete(Name name) {
+        dataSource.deleteById(name.getValue());
+    }
+
     private FeatureToggle mapFromEntity(FeatureToggleEntity entity) {
         return new FeatureToggle(entity.getName(), entity.isValue());
     }

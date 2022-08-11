@@ -43,6 +43,15 @@ public class ToggleController {
         }
     }
 
+    @DeleteMapping("/{name}")
+    public ResponseEntity<Boolean> deleteToggle(@PathVariable("name") String name) {
+        try {
+            toggleService.delete(name);
+        } catch (Exception ignored) {}
+
+        return ResponseEntity.noContent().build();
+    }
+
     private ToggleResponse toResponse(FeatureToggle toggle) {
         return new ToggleResponse(toggle.getName(), toggle.getValue());
     }
