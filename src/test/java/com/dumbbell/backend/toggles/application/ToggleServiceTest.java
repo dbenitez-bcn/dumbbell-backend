@@ -104,6 +104,26 @@ class ToggleServiceTest {
                 .isInstanceOf(FeatureToggleNotFound.class);
     }
 
+    @Test
+    void update_whenToggleExist_shouldUpdateTheToggle() {
+        FeatureToggle expectedToggle = customToggle().withName(TOGGLE_NAME).withValue(false).build();
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.of(testToggle()));
+        when(toggleRepository.upsert(expectedToggle)).thenReturn(expectedToggle);
+
+        FeatureToggle result = sut.update(TOGGLE_NAME, false);
+
+        assertThat(result).isEqualTo(expectedToggle);
+    }
+
+    @Test
+    void update_whenToggleNotExist_shouldFail() {
+        when(toggleRepository.findByName(new Name(TOGGLE_NAME))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> sut.update(TOGGLE_NAME, TOGGLE_VALUE))
+                .isInstanceOf(FeatureToggleNotFound.class);
+
+        verify(toggleRepository, never()).upsert(testToggle());
+    }
 
     @Test
     void delete_whenToggleNotExist_shouldFail() {

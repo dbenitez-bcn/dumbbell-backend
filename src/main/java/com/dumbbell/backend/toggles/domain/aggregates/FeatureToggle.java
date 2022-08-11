@@ -21,4 +21,8 @@ public class FeatureToggle {
     public boolean getValue() {
         return this.value.isValue();
     }
+
+    public void setValue(boolean value) {
+        this.value = new Value(value);
+    }
 }

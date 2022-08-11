@@ -3,6 +3,7 @@ package com.dumbbell.backend.toggles.presentation.controllers;
 import com.dumbbell.backend.toggles.application.ToggleService;
 import com.dumbbell.backend.toggles.domain.exceptions.FeatureToggleNotFound;
 import com.dumbbell.backend.toggles.presentation.request.ToggleCreationRequest;
+import com.dumbbell.backend.toggles.presentation.request.ToggleUpdateRequest;
 import com.dumbbell.backend.toggles.presentation.responses.ToggleResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -69,6 +71,14 @@ class ToggleControllerTest {
         ResponseEntity<Boolean> got = sut.getToggleValue(TOGGLE_NAME);
 
         assertThat(got.getBody()).isFalse();
+    }
+
+    @Test
+    void update_shouldUpdateTheToggle() {
+        ResponseEntity<ToggleResponse> got = sut.updateToggle(TOGGLE_NAME, new ToggleUpdateRequest(TOGGLE_VALUE));
+
+        verify(toggleService).update(TOGGLE_NAME, TOGGLE_VALUE);
+        assertThat(got.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test

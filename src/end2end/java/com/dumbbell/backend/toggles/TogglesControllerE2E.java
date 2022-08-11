@@ -124,7 +124,7 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .authorization(token)
                 .thenAssert()
                 .withCode(200);
-        /*
+
         JSONObject newToggleValue = new JSONObject();
         rightBody.put("value", false);
         endpointRequest()
@@ -132,9 +132,8 @@ public class TogglesControllerE2E extends ApplicationTestCase {
                 .body(newToggleValue)
                 .authorization(token)
                 .thenAssert()
-                .withCode(204)
-                .withResponse("false");
-        */
+                .withCode(204);
+
         endpointRequest()
                 .delete("/toggle/" + toggleName)
                 .authorization(token)

@@ -117,4 +117,12 @@ class GlobalExceptionHandlerTest {
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
         assertThat(result.getBody().message).isEqualTo("Toggles not found");
     }
+
+    @Test
+    void featureToggleNotFound_shouldFeatureToggleNotFound() {
+        ResponseEntity<ErrorDetails> result = sut.featureToggleNotFound();
+
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+        assertThat(result.getBody().message).isEqualTo("Toggle not found");
+    }
 }

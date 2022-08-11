@@ -3,6 +3,7 @@ package com.dumbbell.backend.toggles.presentation.controllers;
 import com.dumbbell.backend.toggles.application.ToggleService;
 import com.dumbbell.backend.toggles.domain.aggregates.FeatureToggle;
 import com.dumbbell.backend.toggles.presentation.request.ToggleCreationRequest;
+import com.dumbbell.backend.toggles.presentation.request.ToggleUpdateRequest;
 import com.dumbbell.backend.toggles.presentation.responses.ToggleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,12 @@ public class ToggleController {
         } catch (Exception e) {
             return ResponseEntity.ok(false);
         }
+    }
+
+    @PutMapping("/{name}")
+    public ResponseEntity updateToggle(@PathVariable("name") String name, @RequestBody ToggleUpdateRequest request) {
+        toggleService.update(name, request.value);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{name}")

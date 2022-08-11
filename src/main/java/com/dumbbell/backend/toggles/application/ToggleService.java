@@ -38,6 +38,12 @@ public class ToggleService {
                 .orElseThrow(FeatureToggleNotFound::new);
     }
 
+    public FeatureToggle update(String name, boolean value) {
+        FeatureToggle toggle = findByName(name);
+        toggle.setValue(value);
+        return repository.upsert(toggle);
+    }
+
     public void delete(String name) {
         findByName(name);
         repository.delete(new Name(name));
