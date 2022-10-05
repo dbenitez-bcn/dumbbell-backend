@@ -1,6 +1,7 @@
 package com.dumbbell.backend.exercises.infrastructure.postgresql.implementations;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +19,6 @@ import static com.dumbbell.backend.exercises.ExerciseEntityFixture.AN_EXERCISE_I
 import static com.dumbbell.backend.exercises.ExerciseEntityFixture.MUSCLE_UP_ENTITY;
 import static com.dumbbell.backend.exercises.ExerciseFixture.MUSCLE_UP;
 import static com.dumbbell.backend.exercises.ExerciseFixture.NEW_EXERCISE;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -78,21 +80,23 @@ class PostgresExerciseRepositoryTest {
 
     @Test
     void getAll_shouldReturnAnExerciseList() {
-        when(dataSource.findAll()).thenReturn(asList(MUSCLE_UP_ENTITY));
+        PageImpl page = new PageImpl(List.of(MUSCLE_UP_ENTITY));
+        when(dataSource.findAll(PageRequest.of(1, 10))).thenReturn(page);
 
-        List<Exercise> result = sut.getAll();
+        ExercisesPageDto result = sut.getAll(1, 10);
 
-        assertThat(result).hasSize(1);
-        assertEquality(MUSCLE_UP, result.get(0));
+        assertThat(result.exercises).hasSize(1);
+        assertEquality(MUSCLE_UP, result.exercises.get(0));
+        assertThat(result.pagesCount).isEqualTo(page.getTotalPages());
     }
 
     @Test
     void getAll_whenNoExerciseAreFound_shouldReturnAnEmptyList() {
-        when(dataSource.findAll()).thenReturn(emptyList());
+        when(dataSource.findAll(PageRequest.of(2, 20))).thenReturn(new PageImpl(emptyList()));
 
-        List<Exercise> result = sut.getAll();
+        ExercisesPageDto result = sut.getAll(2, 20);
 
-        assertThat(result).isEmpty();
+        assertThat(result.exercises).isEmpty();
     }
 
     @Test

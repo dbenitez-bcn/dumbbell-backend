@@ -2,14 +2,15 @@ package com.dumbbell.backend.exercises.presentation.controllers;
 
 import com.dumbbell.backend.exercises.application.ExerciseService;
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.presentation.request.ExerciseRequest;
 import com.dumbbell.backend.exercises.presentation.responses.ExerciseResponse;
+import com.dumbbell.backend.exercises.presentation.responses.ExercisesPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,13 +37,21 @@ public class ExerciseController {
     }
 
     @GetMapping("/exercise")
-    public ResponseEntity<List<ExerciseResponse>> getAll() {
+    public ResponseEntity<ExercisesPageResponse> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ExercisesPageDto pageDto = exerciseService
+                .getAll(page, size);
         return ResponseEntity.ok(
-                exerciseService
-                        .getAll()
-                        .stream()
-                        .map(this::mapExerciseToResponse)
-                        .collect(Collectors.toList())
+                new ExercisesPageResponse(
+                        pageDto
+                                .exercises
+                                .stream()
+                                .map(this::mapExerciseToResponse)
+                                .collect(Collectors.toList()),
+                        pageDto.pagesCount
+                )
         );
     }
 

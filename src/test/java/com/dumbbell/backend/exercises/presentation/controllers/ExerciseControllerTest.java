@@ -1,8 +1,10 @@
 package com.dumbbell.backend.exercises.presentation.controllers;
 
 import com.dumbbell.backend.exercises.application.ExerciseService;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.presentation.request.ExerciseRequest;
 import com.dumbbell.backend.exercises.presentation.responses.ExerciseResponse;
+import com.dumbbell.backend.exercises.presentation.responses.ExercisesPageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static com.dumbbell.backend.exercises.ExerciseFixture.*;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,17 +67,17 @@ class ExerciseControllerTest {
 
     @Test
     void getAll_shouldReturnAllExercises() {
-        when(exerciseService.getAll()).thenReturn(asList(MUSCLE_UP));
+        when(exerciseService.getAll(1, 10)).thenReturn(new ExercisesPageDto(List.of(MUSCLE_UP), 0));
 
-        ResponseEntity<List<ExerciseResponse>> result = sut.getAll();
+        ResponseEntity<ExercisesPageResponse> result = sut.getAll(1, 10);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        ExerciseResponse resultBody = result.getBody().get(0);
+        ExerciseResponse resultBody = result.getBody().exercises.get(0);
         assertThat(resultBody.id).isEqualTo(MUSCLE_UP.getId());
         assertThat(resultBody.name).isEqualTo(MUSCLE_UP.getName());
         assertThat(resultBody.description).isEqualTo(MUSCLE_UP.getDescription());
         assertThat(resultBody.difficulty).isEqualTo(MUSCLE_UP.getDifficulty());
-
+        assertThat(result.getBody().pagesCount).isEqualTo(0);
     }
 
     @Test

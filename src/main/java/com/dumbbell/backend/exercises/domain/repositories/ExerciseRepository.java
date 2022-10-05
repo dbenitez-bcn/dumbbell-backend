@@ -1,8 +1,8 @@
 package com.dumbbell.backend.exercises.domain.repositories;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ExerciseRepository {
@@ -10,7 +10,7 @@ public interface ExerciseRepository {
 
     Optional<Exercise> getById(int id);
 
-    List<Exercise> getAll();
+    ExercisesPageDto getAll(int page, int size);
 
     void delete(int id);
 }

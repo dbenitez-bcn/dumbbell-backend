@@ -1,6 +1,7 @@
 package com.dumbbell.backend.exercises.application;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
 import com.dumbbell.backend.exercises.domain.exceptions.ExercisesNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.dumbbell.backend.exercises.ExerciseFixture.*;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -64,18 +64,18 @@ class ExerciseServiceTest {
 
     @Test
     void getAll_shouldReturnAllExercises() {
-        when(repository.getAll()).thenReturn(asList(MUSCLE_UP));
+        when(repository.getAll(1, 10)).thenReturn(new ExercisesPageDto(List.of(MUSCLE_UP), 0));
 
-        List<Exercise> result = sut.getAll();
+        ExercisesPageDto result = sut.getAll(1, 10);
 
-        assertThat(result).containsOnly(MUSCLE_UP);
+        assertThat(result.exercises).containsOnly(MUSCLE_UP);
     }
 
     @Test
     void getAll_whenNoExerciseIsFound_shouldFail() {
-        when(repository.getAll()).thenReturn(emptyList());
+        when(repository.getAll(2, 20)).thenReturn(new ExercisesPageDto(emptyList(), 0));
 
-        assertThatThrownBy(() -> sut.getAll())
+        assertThatThrownBy(() -> sut.getAll(2, 20))
                 .isInstanceOf(ExercisesNotFound.class);
     }
 

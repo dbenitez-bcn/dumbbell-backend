@@ -1,13 +1,12 @@
 package com.dumbbell.backend.exercises.application;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.domain.exceptions.ExerciseNotFound;
 import com.dumbbell.backend.exercises.domain.exceptions.ExercisesNotFound;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,9 +25,9 @@ public class ExerciseService {
                 .orElseThrow(ExerciseNotFound::new);
     }
 
-    public List<Exercise> getAll() {
-        List<Exercise> exercises = exerciseRepository.getAll();
-        if (exercises.isEmpty()) throw new ExercisesNotFound();
+    public ExercisesPageDto getAll(int page, int size) {
+        ExercisesPageDto exercises = exerciseRepository.getAll(page, size);
+        if (exercises.exercises.isEmpty()) throw new ExercisesNotFound();
         return exercises;
     }
 

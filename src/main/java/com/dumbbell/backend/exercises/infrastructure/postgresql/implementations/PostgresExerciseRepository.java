@@ -1,12 +1,14 @@
 package com.dumbbell.backend.exercises.infrastructure.postgresql.implementations;
 
 import com.dumbbell.backend.exercises.domain.aggregates.Exercise;
+import com.dumbbell.backend.exercises.domain.dtos.ExercisesPageDto;
 import com.dumbbell.backend.exercises.domain.repositories.ExerciseRepository;
 import com.dumbbell.backend.exercises.infrastructure.postgresql.entities.ExerciseEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,12 +40,15 @@ public class PostgresExerciseRepository implements ExerciseRepository {
     }
 
     @Override
-    public List<Exercise> getAll() {
-        return dataSource
-                .findAll()
-                .stream()
-                .map(this::entityToExercise)
-                .collect(Collectors.toList());
+    public ExercisesPageDto getAll(int page, int size) {
+        Page<ExerciseEntity> exercisePage = dataSource
+                .findAll(PageRequest.of(page, size));
+        return new ExercisesPageDto(
+                exercisePage
+                    .stream()
+                    .map(this::entityToExercise)
+                    .collect(Collectors.toList()),
+                exercisePage.getTotalPages());
     }
 
     @Override
