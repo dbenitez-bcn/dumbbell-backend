@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DumbbellBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="backend.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.dumbbell.backend.DumbbellBackendApplication" />
+    <option name="ACTIVE_PROFILES" value="dev" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <envs>
+      <env name="DEV_DB_URL" value="jdbc:postgresql://localhost:5432/dumbbell" />
+      <env name="DEV_USERNAME" value="dumbbell" />
+      <env name="DEV_PASSWORD" value="zMypCh5ia5avAV" />
+      <env name="SECRET_KEY" value="MY_SECRET" />
+      <env name="POSTGRES_USER" value="dumbbell" />
+      <env name="POSTGRES_PASSWORD" value="zMypCh5ia5avAV" />
+      <env name="POSTGRES_DB" value="dumbbell" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
