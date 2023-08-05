@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("exercises")
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    @PostMapping("/exercise")
+    @PostMapping()
     public ResponseEntity<ExerciseResponse> create(@RequestBody ExerciseRequest request) {
         Exercise exercise = exerciseService.create(
                 request.name,
@@ -30,13 +31,13 @@ public class ExerciseController {
                 .body(mapExerciseToResponse(exercise));
     }
 
-    @GetMapping("/exercise/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ExerciseResponse> getById(@PathVariable("id") int id) {
         Exercise exercise = exerciseService.getById(id);
         return ResponseEntity.ok(mapExerciseToResponse(exercise));
     }
 
-    @GetMapping("/exercise")
+    @GetMapping()
     public ResponseEntity<ExercisesPageResponse> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -55,13 +56,13 @@ public class ExerciseController {
         );
     }
 
-    @DeleteMapping("/exercise/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") int id) {
         exerciseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/exercise/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") int id, @RequestBody ExerciseRequest request) {
         exerciseService.update(
                 id,

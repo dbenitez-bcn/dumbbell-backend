@@ -11,7 +11,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     @Test
     void shouldFailWhenNoExercisesExist() throws Exception {
         Object result = endpointRequest()
-                .get("/exercise")
+                .get("/exercises")
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(404)
@@ -30,7 +30,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
         body.put("difficulty", 5);
 
         int id = (int) endpointRequest()
-                .post("/exercise")
+                .post("/exercises")
                 .authorization(token)
                 .body(body)
                 .thenAssert()
@@ -39,20 +39,20 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
                 .get("id");
 
         endpointRequest()
-                .put("/exercise/" + id)
+                .put("/exercises/" + id)
                 .authorization(token)
                 .body(body)
                 .thenAssert()
                 .withCode(204);
 
         endpointRequest()
-                .delete("/exercise/" + id)
+                .delete("/exercises/" + id)
                 .authorization(token)
                 .thenAssert()
                 .withCode(204);
 
         endpointRequest()
-                .get("/exercise/" + id)
+                .get("/exercises/" + id)
                 .authorization(token)
                 .thenAssert()
                 .withCode(404);
@@ -62,7 +62,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     @Test
     void aUserCanNotCreateAnExercise() throws Exception {
         endpointRequest()
-                .post("/exercise")
+                .post("/exercises")
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(403);
@@ -71,7 +71,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     @Test
     void aUserCanNotDeleteAnExercise() throws Exception {
         endpointRequest()
-                .delete("/exercise/666")
+                .delete("/exercises/666")
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(403);
@@ -80,7 +80,7 @@ public class ExercisesControllerE2E extends ApplicationTestCase {
     @Test
     void aUserCanNotUpdateAnExercise() throws Exception {
         endpointRequest()
-                .put("/exercise/666")
+                .put("/exercises/666")
                 .authorization(createUserToken())
                 .thenAssert()
                 .withCode(403);
