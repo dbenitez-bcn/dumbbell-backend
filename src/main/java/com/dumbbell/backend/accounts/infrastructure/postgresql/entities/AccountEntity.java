@@ -6,10 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +22,7 @@ public class AccountEntity extends DumbbellEntity {
     private String email;
     private String password;
     private String role;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "email_identity_id", referencedColumnName = "id")
+    private EmailIdentityEntity emailIdentityEntity;
 }

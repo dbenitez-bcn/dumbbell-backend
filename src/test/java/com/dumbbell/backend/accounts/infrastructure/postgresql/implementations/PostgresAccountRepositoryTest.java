@@ -52,6 +52,8 @@ class PostgresAccountRepositoryTest {
         assertThat(capturedAccount.getEmail()).isEqualTo(account.getEmail().getValue());
         assertThat(capturedAccount.getPassword()).isEqualTo(account.getPassword().getValue());
         assertThat(capturedAccount.getRole()).isEqualTo(account.getRole().name());
+        assertThat(capturedAccount.getEmailIdentityEntity().getEmail()).isEqualTo(account.getEmail().getValue());
+        assertThat(capturedAccount.getEmailIdentityEntity().getPassword()).isEqualTo(account.getPassword().getValue());
     }
 
     @Test

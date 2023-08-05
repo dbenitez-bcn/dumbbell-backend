@@ -4,6 +4,7 @@ import com.dumbbell.backend.accounts.domain.aggregates.Account;
 import com.dumbbell.backend.accounts.domain.repositories.AccountRepository;
 import com.dumbbell.backend.accounts.domain.valueObjects.AccountEmail;
 import com.dumbbell.backend.accounts.infrastructure.postgresql.entities.AccountEntity;
+import com.dumbbell.backend.accounts.infrastructure.postgresql.entities.EmailIdentityEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,12 @@ public class PostgresAccountRepository implements AccountRepository {
                 account.getId(),
                 account.getEmail().getValue(),
                 account.getPassword().getValue(),
-                account.getRole().name()
+                account.getRole().name(),
+                new EmailIdentityEntity(
+                        UUID.randomUUID(),
+                        account.getEmail().getValue(),
+                        account.getPassword().getValue()
+                )
         );
         accountDataSource.save(accountEntity);
     }
