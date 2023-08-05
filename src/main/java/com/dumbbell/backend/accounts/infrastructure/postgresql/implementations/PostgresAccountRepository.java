@@ -21,7 +21,6 @@ public class PostgresAccountRepository implements AccountRepository {
         AccountEntity accountEntity = new AccountEntity(
                 account.getId(),
                 account.getEmail().getValue(),
-                account.getPassword().getValue(),
                 account.getRole().name(),
                 new EmailIdentityEntity(
                         UUID.randomUUID(),
@@ -50,7 +49,7 @@ public class PostgresAccountRepository implements AccountRepository {
         return new Account(
                 entity.getId(),
                 entity.getEmail(),
-                entity.getPassword(),
+                entity.getEmailIdentityEntity().getPassword(),
                 entity.getRole()
         );
     }

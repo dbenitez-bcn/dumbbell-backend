@@ -20,7 +20,6 @@ public class AccountEntity extends DumbbellEntity {
     private UUID id;
     @Column(unique = true)
     private String email;
-    private String password;
     private String role;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "email_identity_id", referencedColumnName = "id")
